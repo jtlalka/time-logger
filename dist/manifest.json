@@ -1,0 +1,51 @@
+{
+    "manifest_version": 2,
+    "name": "Time Logger",
+    "version": "0.1",
+
+    "short_name": "Time Logger",
+    "description": "Time Logger - analyze time spent in the office, calculate overtime and shows diagrams.",
+    "author": "Jakub Tlałka",
+
+    "permissions": [
+        "idle",
+        "storage"
+    ],
+
+    "icons": {
+        "64": "app/img/icon-x64.png",
+        "128": "app/img/icon-x128.png",
+        "256": "app/img/icon-x256.png",
+        "512": "app/img/icon-x512.png"
+    },
+
+    "options_ui": {
+        "chrome_style": false,
+        "page": "app/html/index.html#/options"
+    },
+
+    "browser_action": {
+        "default_title": "Time Logger",
+        "default_icon": "app/img/icon-x64.png",
+        "default_popup": "app/html/index.html#/tooltip"
+    },
+
+    "background": {
+        "persistent": true,
+        "scripts": [
+            "libs/angular/angular.js",
+            "app/js/config/serverConfig.js",
+
+            "app/js/services/core/dataService.js",
+            "app/js/services/core/eventService.js",
+
+            "app/js/services/commonService.js",
+            "app/js/services/loggerService.js",
+            "app/js/services/storageService.js",
+
+            "app/js/services/dao/optionsDao.js",
+            "app/js/services/dao/statusDao.js",
+            "app/js/services/dao/historyDao.js"
+        ]
+    }
+}

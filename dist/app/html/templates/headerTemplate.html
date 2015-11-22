@@ -1,0 +1,14 @@
+<div class="block-top">
+    <span class="block-left text-left">
+        <strong>{{topic}}</strong>
+    </span>
+
+    <span class="block-right text-right">
+        <span data-ng-repeat="(key, view) in views track by $index">
+            <span class="text-link" data-ng-click="openView(view)"
+                  data-ng-class="{'active': isOpen(view)}">{{view | firstLetterUp}}</span>
+
+            <span data-ng-hide="$last">|</span>
+        </span>
+    </span>
+</div>

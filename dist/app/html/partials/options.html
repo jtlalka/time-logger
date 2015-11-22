@@ -1,0 +1,81 @@
+<div id="options" data-ng-init="refresh()">
+    <div data-header-directive="'Options'" data-ng-show="display.header"></div>
+
+    <form name="optionsForm" data-ng-submit="updateOptions()">
+        <fieldset>
+            <legend>General</legend>
+            <label>
+                <input type="checkbox" name="notifications"
+                       data-ng-model="options.notifications"
+                       data-ng-disabled="true" />
+                <span>Show notification after work time.</span>
+            </label>
+            <label>
+                <span>&nbsp;</span>
+                <span>
+                    Maximum offline time in the office:
+                    <select data-ng-options="value as (value | date:'HH:mm':'UTC') for value in ::data.lockedTimeValues"
+                            data-ng-model="options.lockedTime"></select>
+                </span>
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Working Time</legend>
+            <label>
+                <span>Monday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[1]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Tuesday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[2]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Wednesday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[3]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Thursday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[4]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Friday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[5]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Saturday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[6]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label>
+                <span>Sunday:</span>
+                <select data-ng-options="value as value for value in ::data.hoursPerDayValues"
+                        data-ng-model="options.hoursPerDay[0]"
+                        data-ng-change="checkWorkingTime()"></select>
+            </label>
+            <label data-ng-class="{'text-invalid': optionsForm.hoursPerWeek.$invalid}">
+                <span>Working hours per week:</span>
+                <input type="number" name="hoursPerWeek" class="hours-per-week"
+                       min="{{:: data.minHoursPerWeek}}" max="{{:: data.maxHoursPerWeek}}"
+                       data-ng-model="options.hoursPerWeek" data-ng-disabled="true" />
+            </label>
+        </fieldset>
+
+        <div class="submit">
+            <span class="text-tips" data-ng-show="display.update">Saving...</span>
+            <button type="submit" data-ng-disabled="optionsForm.$invalid || !optionsForm.$dirty">Save Changes</button>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,43 @@
+#options {
+}
+
+#options form {
+    margin-top: 5px;
+}
+
+#options fieldset {
+    display: table;
+    overflow: hidden;
+    text-align: left;
+    margin: 0 10px 10px 10px;
+}
+
+#options label {
+    display: table-row;
+}
+
+#options label > span,
+#options label > input,
+#options label > select,
+#options label > button {
+    display: table-cell;
+    vertical-align: middle;
+    white-space: nowrap;
+    margin: 2px 4px;
+}
+
+#options label > input.hours-per-week {
+    background-color: transparent;
+    border: 0 none;
+    font-weight: bold;
+    color: inherit;
+}
+
+#options label > span > select {
+    margin-left: 10px;
+}
+
+#options div.submit {
+    margin: 10px;
+    text-align: right;
+}

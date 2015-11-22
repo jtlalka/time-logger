@@ -1,0 +1,392 @@
+/**
+ * EXT-CLASS
+ * Simple extension for CSS class
+ *
+ */
+
+/****** HTML **********************************************************************************************************/
+* {
+    box-sizing: content-box;
+    background: transparent;
+    border: 0 none;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    text-shadow: none;
+}
+
+fieldset {
+    border: 1px solid #111111;
+    padding: 10px;
+}
+
+legend {
+    color: #111111;
+    padding: 2px 4px;
+}
+
+h1, .h1 {
+    font-size: 30px;
+    line-height: 36px;
+}
+
+h2, .h2 {
+    font-size: 20px;
+    line-height: 26px;
+}
+
+h3, .h3 {
+    font-size: 16px;
+    line-height: 22px;
+}
+
+h4, .h4 {
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0 5px;
+}
+
+h5, .h5 {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 0 5px;
+}
+
+h6, .h6 {
+    font-size: 10px;
+    line-height: 13px;
+    padding: 0 5px;
+}
+
+a:link,
+a:visited,
+.text-link {
+    text-decoration: none;
+    color: #0000ee;
+    cursor: pointer;
+    outline: 0;
+}
+
+a:hover,
+.text-link:hover {
+    text-decoration: underline;
+    color: #0000dd;
+}
+
+a:active,
+.text-link.active {
+    text-decoration: none;
+    color: inherit;
+}
+
+label,
+.label {
+    display: inline-block;
+    cursor: default;
+}
+
+input,
+select,
+button,
+textarea,
+.input,
+.button {
+    border: 1px solid #999999;
+    color: #000000;
+    display: inline-block;
+    padding: 4px;
+    outline: 0;
+}
+
+input:hover,
+select:hover,
+button:hover,
+textarea:hover,
+.input:hover,
+.button:hover {
+    border-color: #aaaaaa;
+}
+
+input:focus,
+select:focus,
+button:focus,
+textarea:focus,
+.input:focus,
+.button:focus {
+    border-color: #0000dd;
+}
+
+input[disabled],
+select[disabled],
+button[disabled],
+textarea[disabled],
+.input[disabled],
+.button[disabled] {
+    background-color: #eeeeee;
+    border-color: #999999;
+    color: #999999;
+}
+
+input.invalid,
+select.invalid,
+button.invalid,
+textarea.invalid,
+.input.invalid,
+.button.invalid {
+    border: 1px solid #aa0000;
+}
+
+button,
+input[type=button],
+input[type=submit],
+.button {
+    background-color: #e0e0e0;
+    padding: 4px 8px;
+    cursor: default;
+}
+
+button:hover,
+input[type=button]:hover,
+input[type=submit]:hover,
+.button:hover {
+    background-color: #eeeeee;
+}
+
+input[type=checkbox] {
+    vertical-align: middle;
+}
+
+/****** text **********************************************************************************************************/
+.text {
+    font-style: normal;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.text-tips {
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.text-word-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.text-space-wrap {
+    white-space: normal;
+    word-wrap: normal;
+}
+
+.text-no-wrap {
+    white-space: nowrap;
+}
+
+.text-undecorated,
+.text-undecorated:focus,
+.text-undecorated:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.text-invalid {
+    color: #aa0000;
+}
+
+.text-correct {
+    color: #33dd00;
+}
+
+
+/****** cursor ********************************************************************************************************/
+.cursor-click {
+    cursor: pointer;
+}
+
+.cursor-arrow {
+    cursor: default;
+}
+
+.cursor-expand {
+    cursor: copy;
+}
+
+.cursor-disabled {
+    cursor: not-allowed;
+}
+
+
+/****** display *******************************************************************************************************/
+.block {
+    display: block;
+}
+
+.block-top {
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+
+.block-bottom {
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+
+.block-right {
+    display: block;
+    float: right;
+}
+
+.block-left {
+    display: block;
+    float: left;
+}
+
+.scrollable {
+    display: block;
+    overflow: auto;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.inline-50p {
+    display: inline-block;
+    width: 50%;
+}
+
+.inline-25p {
+    display: inline-block;
+    width: 25%;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/****** table *******************************************************************************************************/
+.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: table;
+}
+
+.table-group {
+    display: table-row-group;
+}
+
+.table-row {
+    display: table-row;
+    width: 100%;
+}
+
+.table-cell {
+    display: table-cell;
+}
+
+.table-cell-50p {
+    display: table-cell;
+    width: 50%;
+}
+
+.table-cell-25p {
+    display: table-cell;
+    width: 25%;
+}
+
+.table-cell-1p {
+    display: table-cell;
+    width: 1%;
+}
+
+
+/****** visibility ****************************************************************************************************/
+.visible {
+    visibility: visible;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.transparent {
+    background: transparent;
+    border: 0 none;
+    color: inherit;
+}
+
+
+/****** padding *******************************************************************************************************/
+.padding-x1 {
+    padding: 10px;
+}
+
+.padding-x2 {
+    padding: 20px;
+}
+
+.padding-x4 {
+    padding: 40px;
+}
+
+.padding-bottom-x1 {
+    padding-bottom: 10px;
+}
+
+.padding-bottom-x2 {
+    padding-bottom: 20px;
+}
+
+.padding-bottom-x4 {
+    padding-bottom: 40px;
+}
+
+
+/****** margin ********************************************************************************************************/
+.margin-x1 {
+    margin: 10px;
+}
+
+.margin-x2 {
+    margin: 20px;
+}
+
+.margin-x4 {
+    margin: 40px;
+}
+
+.margin-bottom-x1 {
+    margin-bottom: 10px;
+}
+
+.margin-bottom-x2 {
+    margin-bottom: 20px;
+}
+
+.margin-bottom-x4 {
+    margin-bottom: 40px;
+}

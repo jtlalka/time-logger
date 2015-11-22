@@ -1,0 +1,50 @@
+<div id="tooltip" data-ng-init="refresh()">
+    <div data-header-directive="data.viewDate | date: 'dd-MM-yyyy'"></div>
+
+    <div class="progress">
+        <div class="progress-bar" data-toggle-directive="display.history">
+            <span data-ng-repeat="value in daily.values | orderBy:order.property:order.reverse track by $index"
+                  data-ng-class="value.type"
+                  data-ng-show="data.timePerDay > 0"
+                  data-width-directive="value.delta data.timePerDay"></span>
+
+            <span class="locked"
+                  data-ng-show="data.timePerDay === 0"
+                  data-width-directive="100 100"></span>
+        </div>
+    </div>
+
+    <div class="progress-legend" data-ng-click="toggleDailyHistory()">
+        <div><span class="active"></span>Active: {{(daily.types.active || 0) | timeFormat}}</div>
+        <div><span class="idle"></span>Idle: {{(daily.types.idle || 0) | timeFormat}}</div>
+        <div><span class="locked"></span>Offline: {{(daily.types.locked || 0) | timeFormat}}</div>
+        <div><span class="total"></span>Total: {{(daily.types || {}) | countWorkTime | timeFormat}}</div>
+    </div>
+
+    <div class="history" data-ng-show="display.history">
+        <table>
+            <thead>
+                <tr>
+                    <th><a data-ng-click="setOrderProperty('start')">Begin</a></th>
+                    <th><a data-ng-click="setOrderProperty('stop')">End</a></th>
+                    <th><a data-ng-click="setOrderProperty('type')">Type</a></th>
+                    <th><a data-ng-click="setOrderProperty('delta')">Time</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="value in daily.values | orderBy:order.property:order.reverse track by $index">
+                    <td>{{value.start | date: 'HH:mm:ss'}}</td>
+                    <td>{{value.stop | date: 'HH:mm:ss'}}</td>
+                    <td>{{value.type}}</td>
+                    <td>{{value.delta | timeFormat}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="overtime" data-ng-switch="daily.overTime > 0">
+        <span class="over" data-ng-switch-when="true">Daily Over Time: {{daily.overTime | timeFormat}}</span>
+        <span class="todo" data-ng-switch-when="false">Daily Missing Time: {{daily.overTime | timeFormat}}</span>
+    </div>
+
+</div>

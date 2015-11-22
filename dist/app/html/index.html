@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html data-ng-app="timeLogger">
+<head>
+    <title>TimeLogger</title>
+
+    <!-- Angular JS Plugin -->
+    <script src="../../libs/angular/angular.js"></script>
+    <script src="../../libs/angular/angular-route.js"></script>
+
+    <!-- Angular config -->
+    <script src="../js/config/viewConfig.js"></script>
+
+    <!-- Angular services -->
+    <script src="../js/services/viewService.js"></script>
+    <script src="../js/services/commonService.js"></script>
+    <script src="../js/services/loggerService.js"></script>
+    <script src="../js/services/storageService.js"></script>
+    <script src="../js/services/dao/optionsDao.js"></script>
+    <script src="../js/services/dao/statusDao.js"></script>
+    <script src="../js/services/dao/historyDao.js"></script>
+
+    <!-- Angular controllers -->
+    <script src="../js/controllers/historyController.js"></script>
+    <script src="../js/controllers/tooltipController.js"></script>
+    <script src="../js/controllers/optionsController.js"></script>
+
+    <!-- Angular directives -->
+    <script src="../js/directives/headerDirective.js"></script>
+    <script src="../js/directives/toggleDirective.js"></script>
+    <script src="../js/directives/widthDirective.js"></script>
+
+    <!-- Angular filters -->
+    <script src="../js/filters/streamFilters.js"></script>
+    <script src="../js/filters/propertyFilters.js"></script>
+
+    <!-- ExtClass CSS Plugin -->
+    <link rel="stylesheet" href="../../libs/ext-class/ext-class.css" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/options.css" />
+    <link rel="stylesheet" href="../css/tooltip.css" />
+    <link rel="stylesheet" href="../css/history.css" />
+</head>
+<body data-ng-view=""></body>
+</html>

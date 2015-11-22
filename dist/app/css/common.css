@@ -1,0 +1,74 @@
+/* ---- body -------------------------------------------------------------------------------------------------------- */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 10px;
+    width: 500px;
+    cursor: default;
+}
+
+span.overtime {
+    color: #aa0000;
+}
+
+
+/* ---- overtime ---------------------------------------------------------------------------------------------------- */
+div.overtime {
+    background-color: #eeeeee;
+    border: 1px solid #e0e0e0;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+div.overtime > span.work {
+    color: #00aa00;
+}
+
+div.overtime > span.todo {
+    color: #000000;
+}
+
+div.overtime > span.over {
+    color: #aa0000;
+}
+
+
+/* ---- progress-bar ------------------------------------------------------------------------------------------------ */
+div.progress-bar {
+    background-color: #ffffff;
+    border: 1px solid #111111;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-size: 1px;
+    line-height: 1px;
+}
+
+div.progress-bar > span {
+    display: inline-block;
+    height: 100%;
+}
+
+div.progress-bar > span.active,
+div.progress-legend span.active {
+    background-color: #44ff44;
+}
+
+div.progress-bar > span.idle,
+div.progress-legend span.idle {
+    background-color: #ffee23;
+}
+
+div.progress-bar > span.locked,
+div.progress-legend span.locked {
+    background-color: #999999;
+}
+
+div.progress-bar > span.over,
+div.progress-legend span.over {
+    background-color: #aa0000;
+}

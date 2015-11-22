@@ -1,0 +1,68 @@
+#history {
+}
+
+#history div.history {
+    border: 1px solid #111111;
+    margin: 10px;
+}
+
+#history div.history > form {
+    background-color: #aaaaaa;
+    border-bottom: 1px solid #111111;
+    display: block;
+    overflow: hidden;
+    padding: 5px;
+}
+
+#history div.history > form label {
+    margin-left: 5px;
+}
+
+#history div.history > form input {
+    background-color: #ffffff;
+    border: 1px solid #666666;
+    padding: 2px;
+}
+
+#history div.history > form input:focus {
+    border-color: #0000dd;
+}
+
+#history div.history > form input[disabled] {
+    background-color: #eeeeee;
+    color: #999999;
+}
+
+#history div.history > form button {
+    background-color: #5555ff;
+    border-color: #0000dd;
+    color: #ffffff;
+}
+
+#history div.history > form button:hover {
+    background-color: #3333ff;
+    cursor: pointer;
+}
+
+#history div.history > div.values {
+    max-height: 350px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#history div.history > div.values > div {
+    background-color: #eeeeee;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    margin: 2px;
+    padding: 8px;
+}
+
+#history div.history > div.values > div:hover {
+    background-color: #e0e0e0;
+}
+
+#history div.history > div.values div.progress-bar {
+    border: 1px solid #111111;
+    height: 5px;
+}
