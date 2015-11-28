@@ -10,7 +10,7 @@ angular.module('timeLogger')
         var historyStack = commonService.getSyncStack();
 
         this.intervalTime = commonService.toMillisecond(30);
-        this.deltaTime = commonService.toMillisecond(120);
+        this.precisionTime = commonService.toMillisecond(90);
 
         this.type = {
             ACTIVE: 'active',
@@ -53,7 +53,7 @@ angular.module('timeLogger')
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, true);
                     createStatusProxy(currentTime, type, callback);
 
-                } else if (isInvalidTime(data.checkTime, currentTime, self.deltaTime)) {
+                } else if (isInvalidTime(data.checkTime, currentTime, self.precisionTime)) {
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, false);
                     createStatusProxy(currentTime, defActive(type), callback);
 
@@ -114,9 +114,6 @@ angular.module('timeLogger')
         };
 
         var updateHistoryProxy = function(startTime, currentTime, type, nextDay) {
-            if (currentTime - startTime < self.deltaTime) {
-                return;
-            }
             historyStack.push(updateHistoryAction, {
                 status: statusDao.getStatusObject(startTime, currentTime, type),
                 nextDay: nextDay

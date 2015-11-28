@@ -2,9 +2,10 @@
  * Logger Service
  */
 angular.module('timeLogger')
-    .service('loggerService', function($filter) {
+    .service('loggerService', function($filter, storageService) {
 
-        var LOG_LEVER = 1;
+        var KEY_LEVEL = 'logger.level';
+        var LOG_LEVER = storageService.local.getInt(KEY_LEVEL, 2);
 
         var LEVEL = {
             ERROR: {name: 'ERROR', value: 3},

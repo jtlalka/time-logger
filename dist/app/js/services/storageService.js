@@ -94,4 +94,10 @@ angular.module('timeLogger')
                 return defaultObject;
             }
         };
+
+        this.local = {
+            getInt: function(key, defValue) {
+                return localStorage[key] ? parseInt(localStorage[key], 10) : defValue;
+            }
+        };
     });

@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Time Logger",
-    "version": "0.1",
+    "version": "0.1.1",
 
     "short_name": "Time Logger",
     "description": "Time Logger - analyze time spent in the office, calculate overtime and shows diagrams.",
