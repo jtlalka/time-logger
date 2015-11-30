@@ -1,11 +1,14 @@
 {
     "manifest_version": 2,
     "name": "Time Logger",
-    "version": "0.1.1",
+    "version": "0.1.2",
 
-    "short_name": "Time Logger",
-    "description": "Time Logger - analyze time spent in the office, calculate overtime and shows diagrams.",
     "author": "Jakub Tlałka",
+    "short_name": "Time Logger",
+    "description": "Easy way to control time spent in the office, calculate overtime and to plan working time.",
+
+    "minimum_chrome_version": "22.0.0.0",
+    "offline_enabled": true,
 
     "permissions": [
         "idle",
