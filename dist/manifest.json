@@ -9,7 +9,8 @@
 
     "permissions": [
         "idle",
-        "storage"
+        "storage",
+        "unlimitedStorage"
     ],
 
     "icons": {
