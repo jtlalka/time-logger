@@ -2,9 +2,10 @@
  * Chrome Event Service
  */
 angular.module('timeLogger')
-    .service('eventService', function($interval, dataService, updateService, loggerService) {
+    .service('eventService', function($interval, dataService, updateService, propertyService, loggerService) {
 
-        var detectionTime = 300;
+        var detectionTime = propertyService.getDetectionTime();
+        var intervalTime = propertyService.getIntervalTime();
 
         this.initChromeEvents = function() {
             onInstalledEvent();
@@ -48,8 +49,7 @@ angular.module('timeLogger')
 
         this.initIntervalEvents = function() {
             $interval(function() {
-                loggerService.trace('EventService: interval check event.');
                 dataService.checkStatus();
-            }, dataService.intervalTime);
+            }, intervalTime);
         };
     });

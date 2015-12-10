@@ -27,7 +27,7 @@ angular.module('timeLogger')
             }).then(function(history) {
                 $scope.history = initHistoryObject(history);
                 $scope.historyForm.$setPristine();
-                loggerService.info('HistoryController: update time frame.');
+                loggerService.info('HistoryController: update time frame.', history);
             });
         };
 

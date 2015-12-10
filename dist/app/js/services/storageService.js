@@ -110,13 +110,4 @@ angular.module('timeLogger')
                 return defaultObject;
             }
         };
-
-        this.local = {
-            get: function(key, defValue) {
-                return localStorage[key] ? localStorage[key] : defValue;
-            },
-            getInt: function(key, defValue) {
-                return localStorage[key] ? parseInt(localStorage[key], 10) : defValue;
-            }
-        };
     });

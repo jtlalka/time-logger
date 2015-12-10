@@ -2,10 +2,10 @@
  * Logger Service
  */
 angular.module('timeLogger')
-    .service('loggerService', function($filter, storageService) {
+    .service('loggerService', function($filter, propertyService) {
 
-        var KEY_LEVEL = 'logger.level';
-        var LOG_LEVER = storageService.local.getInt(KEY_LEVEL, 2);
+        var LOG_LEVER = propertyService.getLoggerLevel();
+        var LOG_PARSE = propertyService.getLoggerParse();
 
         var LEVEL = {
             ERROR: {name: 'ERROR', value: 3},
@@ -35,7 +35,7 @@ angular.module('timeLogger')
                 return;
             }
             if (object) {
-                console.info(getDateTime() + getLevel(LEVEL), message, object);
+                console.info(getDateTime() + getLevel(LEVEL), message, getObject(object));
             } else {
                 console.info(getDateTime() + getLevel(LEVEL), message);
             }
@@ -47,5 +47,13 @@ angular.module('timeLogger')
 
         var getDateTime = function() {
             return $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+        };
+
+        var getObject = function(object) {
+            if (LOG_PARSE && JSON.stringify) {
+                return JSON.stringify(object);
+            } else {
+                return object;
+            }
         };
     });

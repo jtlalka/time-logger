@@ -45,11 +45,11 @@ angular.module('timeLogger')
         $scope.updateOptions = function() {
             $scope.display.update = true;
 
-            optionsDao.updateOptions($scope.options).then(function(data) {
-                loggerService.info('OptionsController: update options.');
+            optionsDao.updateOptions($scope.options).then(function(options) {
+                loggerService.info('OptionsController: update options.', options);
 
                 $timeout(function() {
-                    $scope.options = data;
+                    $scope.options = options;
                     $scope.display.update = false;
                     $scope.optionsForm.$setPristine();
                 }, 200);

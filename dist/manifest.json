@@ -45,6 +45,7 @@
             "app/js/services/core/updateService.js",
 
             "app/js/services/commonService.js",
+            "app/js/services/propertyService.js",
             "app/js/services/loggerService.js",
             "app/js/services/storageService.js",
 

@@ -2,15 +2,14 @@
  * Storage Service
  */
 angular.module('timeLogger')
-    .service('dataService', function(loggerService, commonService, optionsDao, historyDao, statusDao) {
+    .service('dataService', function(propertyService, loggerService, commonService, optionsDao, historyDao, statusDao) {
 
         var self = this;
         var options = null;
+
         var statusStack = commonService.getSyncStack();
         var historyStack = commonService.getSyncStack();
-
-        this.intervalTime = commonService.toMillisecond(30);
-        this.precisionTime = commonService.toMillisecond(90);
+        var precisionTime = propertyService.getPrecisionTime();
 
         this.type = {
             ACTIVE: 'active',
@@ -53,7 +52,7 @@ angular.module('timeLogger')
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, true);
                     createStatusProxy(currentTime, type, callback);
 
-                } else if (isInvalidTime(data.checkTime, currentTime, self.precisionTime)) {
+                } else if (isInvalidTime(data.checkTime, currentTime, precisionTime)) {
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, false);
                     createStatusProxy(currentTime, defActive(type), callback);
 
