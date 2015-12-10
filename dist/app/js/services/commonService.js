@@ -10,8 +10,8 @@ angular.module('timeLogger')
 
             this.push = function(func, args) {
                 callStack.push({
-                    callFunction: func,
-                    callArguments: args
+                    func: func,
+                    args: args
                 });
                 if (!inProgress) {
                     triggerFunction();
@@ -22,7 +22,7 @@ angular.module('timeLogger')
                 inProgress = true;
                 var item = callStack.shift();
 
-                item.callFunction(item.callArguments, function() {
+                item.func(item.args, function() {
                     if (callStack.length > 0) {
                         triggerFunction();
                     } else {
@@ -32,8 +32,8 @@ angular.module('timeLogger')
             };
         }
 
-        var getSyncStack = function(func) {
-            return new SyncStack(func);
+        var getSyncStack = function() {
+            return new SyncStack();
         };
 
         var isTrue = function(value) {

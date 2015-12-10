@@ -8,6 +8,8 @@ angular.module('timeLogger')
         var localFactory = {};
 
         function SyncManager(name) {
+
+            var self = this;
             var dbTable = name;
 
             this.get = function(object) {
@@ -33,9 +35,17 @@ angular.module('timeLogger')
                     });
                 });
             };
+
+            this.persist = function(object, dataCallback) {
+                return self.get(object).then(function(data) {
+                    return self.set(dataCallback(data));
+                });
+            };
         }
 
         function LocalManager(name) {
+
+            var self = this;
             var dbTable = name;
 
             this.get = function(object) {
@@ -59,6 +69,12 @@ angular.module('timeLogger')
                     chrome.storage.local.remove(dbTable, function() {
                         resolve();
                     });
+                });
+            };
+
+            this.persist = function(object, dataCallback) {
+                return self.get(object).then(function(data) {
+                    return self.set(dataCallback(data));
                 });
             };
         }
@@ -96,6 +112,9 @@ angular.module('timeLogger')
         };
 
         this.local = {
+            get: function(key, defValue) {
+                return localStorage[key] ? localStorage[key] : defValue;
+            },
             getInt: function(key, defValue) {
                 return localStorage[key] ? parseInt(localStorage[key], 10) : defValue;
             }

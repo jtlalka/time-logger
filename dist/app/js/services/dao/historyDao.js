@@ -43,16 +43,8 @@ angular.module('timeLogger')
             return localManager.set(history);
         };
 
-        this.removeHistory = function() {
-            return localManager.remove();
-        };
-
-        this.persistHistory = function(dataCallback, successCallback) {
-            self.getHistory().then(function(data) {
-                self.updateHistory(dataCallback(data)).then(function(data) {
-                    successCallback(data);
-                });
-            });
+        this.persistHistory = function(dataCallback) {
+            return localManager.persist(dataModel.getHistoryEntry(), dataCallback);
         };
 
         this.dateToInteger = function(dateFormat) {

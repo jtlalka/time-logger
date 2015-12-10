@@ -28,8 +28,8 @@ angular.module('timeLogger')
             return localManager.set(dataModel.getStatusEntry(startTime, checkTime, type));
         };
 
-        this.removeStatus = function() {
-            return localManager.remove();
+        this.persistStatus = function(dataCallback) {
+            return localManager.persist(dataModel.getStatusEntry(null, null, null), dataCallback);
         };
 
         this.getStatusObject = function(startTime, checkTime, type) {

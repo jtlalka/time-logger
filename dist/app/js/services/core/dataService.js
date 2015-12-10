@@ -141,7 +141,7 @@ angular.module('timeLogger')
         var updateTimelyHistory = function(args, callback) {
             historyDao.persistHistory(function(history) {
                 return historyDao.updateHistoryStatus(history, args.status, args.hoursPerDay);
-            }, function(history) {
+            }).then(function(history) {
                 loggerService.info('DataService: update history.', history);
                 callback();
             });

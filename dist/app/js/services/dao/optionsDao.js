@@ -25,6 +25,10 @@ angular.module('timeLogger')
             return syncManager.set(options);
         };
 
+        this.persistOptions = function(dataCallback) {
+            return syncManager.persist(dataModel.getDefaultOptions(), dataCallback);
+        };
+
         this.getHoursPerDay = function(options, dateFormat) {
             return options.hoursPerDay[new Date(dateFormat).getDay()];
         };

@@ -42,6 +42,7 @@
 
             "app/js/services/core/dataService.js",
             "app/js/services/core/eventService.js",
+            "app/js/services/core/updateService.js",
 
             "app/js/services/commonService.js",
             "app/js/services/loggerService.js",

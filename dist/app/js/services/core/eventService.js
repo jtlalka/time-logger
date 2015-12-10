@@ -2,7 +2,7 @@
  * Chrome Event Service
  */
 angular.module('timeLogger')
-    .service('eventService', function($interval, dataService, loggerService) {
+    .service('eventService', function($interval, dataService, updateService, loggerService) {
 
         var detectionTime = 300;
 
@@ -16,7 +16,9 @@ angular.module('timeLogger')
         var onInstalledEvent = function() {
             chrome.runtime.onInstalled.addListener(function() {
                 loggerService.trace('EventService: onInstalled event.');
-                dataService.checkStatus(dataService.type.ACTIVE);
+                updateService.checkUpdates(function() {
+                    dataService.checkStatus(dataService.type.ACTIVE);
+                });
             });
         };
 
