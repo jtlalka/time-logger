@@ -6,7 +6,7 @@
     margin: 10px;
 }
 
-#history div.history > form {
+#history div.history > form.time-frame {
     background-color: #aaaaaa;
     border-bottom: 1px solid #111111;
     display: block;
@@ -14,32 +14,32 @@
     padding: 5px;
 }
 
-#history div.history > form label {
+#history div.history > form.time-frame label {
     margin-left: 5px;
 }
 
-#history div.history > form input {
+#history div.history > form.time-frame input {
     background-color: #ffffff;
     border: 1px solid #666666;
     padding: 2px;
 }
 
-#history div.history > form input:focus {
+#history div.history > form.time-frame input:focus {
     border-color: #0000dd;
 }
 
-#history div.history > form input[disabled] {
+#history div.history > form.time-frame input[disabled] {
     background-color: #eeeeee;
     color: #999999;
 }
 
-#history div.history > form button {
+#history div.history > form.time-frame button {
     background-color: #5555ff;
     border-color: #0000dd;
     color: #ffffff;
 }
 
-#history div.history > form button:hover {
+#history div.history > form.time-frame button:hover {
     background-color: #3333ff;
     cursor: pointer;
 }
@@ -53,13 +53,14 @@
 #history div.history > div.values > div {
     background-color: #eeeeee;
     border: 1px solid #e0e0e0;
-    cursor: pointer;
     margin: 2px;
     padding: 8px;
 }
 
-#history div.history > div.values > div:hover {
+#history div.history > div.values > div[data-ng-click]:hover {
     background-color: #e0e0e0;
+    border: 1px solid #dedede;
+    cursor: pointer;
 }
 
 #history div.history > div.values div.progress-bar {

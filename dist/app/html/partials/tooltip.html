@@ -42,9 +42,9 @@
         </table>
     </div>
 
-    <div class="overtime" data-ng-switch="daily.overTime > 0">
-        <span class="over" data-ng-switch-when="true">Daily Over Time: {{daily.overTime | timeFormat}}</span>
-        <span class="todo" data-ng-switch-when="false">Daily Missing Time: {{daily.overTime | timeFormat}}</span>
+    <div class="summary" data-ng-switch="daily.overTime > 0">
+        <span class="warn" data-ng-switch-when="true">Daily Over Time: {{daily.overTime | timeFormat}}</span>
+        <span class="info" data-ng-switch-when="false">Daily Missing Time: {{daily.overTime | timeFormat}}</span>
     </div>
 
 </div>

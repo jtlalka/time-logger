@@ -18,7 +18,7 @@ angular.module('timeLogger')
             });
         };
 
-        $scope.updateHistory = function() {
+        $scope.updateTimeFrame = function() {
             historyDao.persistHistory(function(history) {
                 var beginKey = dateToKey($scope.data.fromDate);
                 var endKey = dateToKey($scope.data.toDate);
@@ -26,14 +26,14 @@ angular.module('timeLogger')
                 return historyDao.updateTimeFrameHistory(history, beginKey, endKey);
             }).then(function(history) {
                 $scope.history = initHistoryObject(history);
-                $scope.historyForm.$setPristine();
+                $scope.timeForm.$setPristine();
                 loggerService.info('HistoryController: update time frame.', history);
             });
         };
 
         var initHistoryObject = function(history) {
-            history = historyDao.filterHistory(history);
-            history = historyDao.inActiveDay(history, Date.now());
+            history = historyDao.filterTimeFrame(history);
+            history = historyDao.filterEmptyDays(history);
 
             initTimeFrameScope(history.timeFrame);
             return extendHistoryObject(history);

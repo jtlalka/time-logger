@@ -1,38 +1,19 @@
 /* ---- body -------------------------------------------------------------------------------------------------------- */
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #fdfdfd;
     vertical-align: middle;
     white-space: nowrap;
+    cursor: default;
     padding: 10px;
     width: 500px;
-    cursor: default;
 }
 
-span.overtime {
-    color: #aa0000;
-}
-
-
-/* ---- overtime ---------------------------------------------------------------------------------------------------- */
-div.overtime {
-    background-color: #eeeeee;
-    border: 1px solid #e0e0e0;
-    margin: 10px;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-div.overtime > span.work {
-    color: #00aa00;
-}
-
-div.overtime > span.todo {
+span.regular {
     color: #000000;
 }
 
-div.overtime > span.over {
+span.invalid {
     color: #aa0000;
 }
 
@@ -53,6 +34,11 @@ div.progress-bar > span {
     height: 100%;
 }
 
+div.progress-bar > span.total,
+div.progress-legend span.total {
+    background-color: #ffffff;
+}
+
 div.progress-bar > span.active,
 div.progress-legend span.active {
     background-color: #44ff44;
@@ -71,4 +57,28 @@ div.progress-legend span.locked {
 div.progress-bar > span.over,
 div.progress-legend span.over {
     background-color: #aa0000;
+}
+
+
+/* ---- summary ----------------------------------------------------------------------------------------------------- */
+div.summary {
+    background-color: #eeeeee;
+    border: 1px solid #e0e0e0;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+div.summary > span.good {
+    color: #00aa00;
+}
+
+div.summary > span.info {
+    color: #000000;
+}
+
+div.summary > span.warn {
+    color: #aa0000;
 }

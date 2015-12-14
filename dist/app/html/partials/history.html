@@ -2,7 +2,7 @@
     <div data-header-directive="'History'"></div>
 
     <div class="history">
-        <form name="historyForm" data-ng-submit="updateHistory()">
+        <form class="time-frame" name="timeForm" data-ng-submit="updateTimeFrame()">
             <label>
                 <input type="checkbox" data-ng-model="data.fromFlag" data-ng-change="clearFromData()" />
                 <span>From:</span>
@@ -15,28 +15,27 @@
                 <input type="checkbox" data-ng-model="data.toFlag" data-ng-change="clearToData()" />
                 <span>To:</span>
                 <input type="date" class="date" placeholder="yyyy-mm-dd"
-                       data-ng-model="data.toDate"
-                       data-ng-required="data.toFlag"
-                       data-ng-disabled="data.toFlag === false" />
+                        data-ng-model="data.toDate"
+                        data-ng-required="data.toFlag"
+                        data-ng-disabled="data.toFlag === false" />
             </label>
             <label>
                 <button type="submit"
-                        data-ng-show="historyForm.$valid && historyForm.$dirty"
-                        data-ng-disabled="historyForm.$invalid || historyForm.$pristine">Save</button>
+                        data-ng-show="timeForm.$valid && timeForm.$dirty"
+                        data-ng-disabled="timeForm.$invalid || timeForm.$pristine">Save</button>
             </label>
         </form>
         <div class="values">
-            <div data-ng-repeat="day in history.daily | orderObjectBy:'date':true track by $index"
-                    data-ng-show=":: day.active"
+            <div data-ng-repeat="day in dailyArray = (history.daily | orderObjectBy:'date':true) track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">
                     <div class="block-left">
-                        <span>{{:: day.date | date: 'dd-MM-yyyy'}}</span>
+                        <span>{{day.date | date: 'dd-MM-yyyy'}}</span>
                     </div>
                     <div class="block-right">
-                        <span class="time">{{:: (day.types || {}) | countWorkTime | timeFormat : 'positive'}}</span> /
-                        <span class="overtime">{{:: (day.overTime || 0) | timeFormat : 'positive'}}</span>
+                        <span class="regular">{{(day.types || {}) | countWorkTime | timeFormat: 'positive'}}</span> /
+                        <span class="invalid">{{(day.overTime || 0) | timeFormat: 'positive'}}</span>
                     </div>
                 </div>
 
@@ -46,12 +45,18 @@
                           data-width-directive="value data.barSize"></span>
                 </div>
             </div>
+            <div class="summary"
+                    data-ng-show="dailyArray.length === 0"
+                    data-ng-switch="data.fromFlag || data.toFlag || timeForm.$dirty">
+                <span class="warn" data-ng-switch-when="true">No data in this range</span>
+                <span class="info" data-ng-switch-when="false">No data from previous days</span>
+            </div>
         </div>
     </div>
 
-    <div class="overtime" data-ng-switch="history.timeFrame.overTime > 0">
-        <span class="over" data-ng-switch-when="true">Total Over Time: {{history.timeFrame.overTime | timeFormat}}</span>
-        <span class="todo" data-ng-switch-when="false">Total Missing Time: {{history.timeFrame.overTime | timeFormat}}</span>
+    <div class="summary" data-ng-switch="history.timeFrame.overTime > 0">
+        <span class="warn" data-ng-switch-when="true">Total Over Time: {{history.timeFrame.overTime | timeFormat}}</span>
+        <span class="info" data-ng-switch-when="false">Total Missing Time: {{history.timeFrame.overTime | timeFormat}}</span>
     </div>
 
 </div>

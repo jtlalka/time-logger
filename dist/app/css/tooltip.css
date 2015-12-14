@@ -6,7 +6,6 @@
 }
 
 #tooltip div.progress > div.progress-bar {
-    background-color: #fdfdfd;
     border: 1px solid #111111;
     cursor: pointer;
     height: 20px;
