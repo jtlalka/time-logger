@@ -6,7 +6,7 @@
             <label>
                 <input type="checkbox" data-ng-model="data.fromFlag" data-ng-change="clearFromData()" />
                 <span>From:</span>
-                <input type="date" class="date" placeholder="yyyy-mm-dd"
+                <input type="date" class="date"
                         data-ng-model="data.fromDate"
                         data-ng-required="data.fromFlag"
                         data-ng-disabled="data.fromFlag === false" />
@@ -14,7 +14,7 @@
             <label>
                 <input type="checkbox" data-ng-model="data.toFlag" data-ng-change="clearToData()" />
                 <span>To:</span>
-                <input type="date" class="date" placeholder="yyyy-mm-dd"
+                <input type="date" class="date"
                         data-ng-model="data.toDate"
                         data-ng-required="data.toFlag"
                         data-ng-disabled="data.toFlag === false" />
@@ -26,7 +26,7 @@
             </label>
         </form>
         <div class="values">
-            <div data-ng-repeat="day in dailyArray = (history.daily | orderObjectBy:'date':true) track by $index"
+            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | reduceBy:reducer | sortBy:orderer) track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">

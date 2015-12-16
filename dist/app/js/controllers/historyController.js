@@ -12,6 +12,16 @@ angular.module('timeLogger')
             toDate: null
         };
 
+        $scope.orderer = {
+            property: 'date',
+            reverse: true
+        };
+
+        $scope.reducer = {
+            property: 'active',
+            value: true
+        };
+
         $scope.refresh = function() {
             historyDao.getHistory().then(function(data) {
                 $scope.history = initHistoryObject(data);
@@ -50,8 +60,9 @@ angular.module('timeLogger')
         var extendHistoryObject = function(history) {
             for (var key in history.daily) {
                 if (history.daily.hasOwnProperty(key)) {
+                    history.daily[key].key = key;
                     history.daily[key].date = keyToDate(key);
-                    history.daily[key].values = null;
+                    history.daily[key].values.length = 0;
                 }
             }
             return history;

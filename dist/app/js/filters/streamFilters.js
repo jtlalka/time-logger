@@ -1,23 +1,31 @@
 /**
- * Order Object By property filter.
+ * Transform Object to Array.
  */
 angular.module('timeLogger')
-    .filter('orderObjectBy', function() {
-        return function(items, field, reverse) {
-            var filtered = [];
+    .filter('toArray', function(commonService) {
+        return function(object) {
+            return commonService.toArray(object);
+        };
+    });
 
-            for (var key in items) {
-                if (items.hasOwnProperty(key)) {
-                    filtered.push(items[key]);
-                }
-            }
-            filtered.sort(function (a, b) {
-                if (reverse) {
-                    return (b[field] > a[field] ? 1 : -1);
-                } else {
-                    return (b[field] < a[field] ? 1 : -1);
-                }
-            });
-            return filtered;
+
+/**
+ * Sort by object which contains property and reverse flag.
+ */
+angular.module('timeLogger')
+    .filter('sortBy', function(commonService) {
+        return function(array, order) {
+            return commonService.arraySort(array, order.property, order.reverse);
+        };
+    });
+
+
+/**
+ * Reduce by object which contains property and key.
+ */
+angular.module('timeLogger')
+    .filter('reduceBy', function(commonService) {
+        return function(array, reduce) {
+            return commonService.arrayReduce(array, reduce.property, reduce.value);
         };
     });

@@ -93,6 +93,40 @@ angular.module('timeLogger')
             }
         };
 
+        var toArray = function(objectFrom, arrayTo) {
+            if (!Array.isArray(arrayTo)) {
+                arrayTo = [];
+            }
+            for (var key in objectFrom) {
+                if (objectFrom.hasOwnProperty(key)) {
+                    arrayTo.push(objectFrom[key]);
+                }
+            }
+            return arrayTo;
+        };
+
+        var arraySort = function(array, property, reverse) {
+            if (isUndefined(property)) {
+                return array;
+            }
+            return array.sort(function (a, b) {
+                if (reverse) {
+                    return (b[property] > a[property] ? 1 : -1);
+                } else {
+                    return (b[property] < a[property] ? 1 : -1);
+                }
+            });
+        };
+
+        var arrayReduce = function(array, property, value) {
+            if (isUndefined(property)) {
+                return array;
+            }
+            return array.filter(function(item) {
+                return item[property] && item[property] === value;
+            });
+        };
+
         return {
             getSyncStack: getSyncStack,
             isTrue: isTrue,
@@ -103,6 +137,9 @@ angular.module('timeLogger')
             isUndefined: isUndefined,
             toSeconds: toSeconds,
             toMillisecond: toMillisecond,
-            copyProperty: copyProperty
+            copyProperty: copyProperty,
+            toArray: toArray,
+            arraySort: arraySort,
+            arrayReduce: arrayReduce
         };
     });
