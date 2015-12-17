@@ -8,16 +8,25 @@ angular.module('timeLogger')
             scope: false,
             link: function($scope, element, args) {
 
-                /**
-                 * OnClick Event
-                 */
-                element.on('click', function() {
+                var toggleEvent = function() {
                     $scope.$apply(function() {
                         var toggleKey = args.toggleDirective;
                         var toggleValue = $parse(toggleKey)($scope);
 
                         $parse(toggleKey).assign($scope, !toggleValue);
                     });
+                };
+
+                /**
+                 * Setup Click Event
+                 */
+                element.on('click', toggleEvent);
+
+                /**
+                 * Destroy Click Event
+                 */
+                $scope.$on('$destroy', function() {
+                    element.off('click', toggleEvent);
                 });
             }
         };
