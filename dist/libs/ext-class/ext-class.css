@@ -203,6 +203,12 @@ input[type=checkbox] {
     white-space: nowrap;
 }
 
+.text-click:hover,
+.text-click:focus {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .text-undecorated,
 .text-undecorated:focus,
 .text-undecorated:hover {

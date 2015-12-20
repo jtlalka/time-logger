@@ -20,6 +20,11 @@ angular.module('timeLogger')
             reverse: false
         };
 
+        $scope.reduce = {
+            property: null,
+            value: null
+        };
+
         $scope.refresh = function() {
             if ($routeParams.date) {
                 $scope.data.viewDate = new Date(parseInt($routeParams.date, 10));
@@ -59,11 +64,11 @@ angular.module('timeLogger')
             return values;
         };
 
-        $scope.setOrderProperty = function(property) {
-            if ($scope.order.property === property) {
-                $scope.order.reverse = !$scope.order.reverse;
+        $scope.isReduced = function(reduce, value) {
+            if (reduce.property && reduce.value !== value) {
+                return 'reduced';
             } else {
-                $scope.order.property = property;
+                return '';
             }
         };
     });

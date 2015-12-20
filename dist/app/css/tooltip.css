@@ -22,12 +22,17 @@
     width: 25%;
 }
 
-#tooltip div.progress-legend > div > span {
+#tooltip div.progress-legend > div.reduced {
+    color: #999999;
+}
+
+#tooltip div.progress-legend > div > span.legend {
     border: 1px solid #111111;
     display: inline-block;
-    margin-right: 8px;
+    overflow: hidden;
     width: 10px;
     height: 10px;
+    margin-right: 2px;
 }
 
 #tooltip div.history {
