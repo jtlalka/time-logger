@@ -106,20 +106,29 @@ angular.module('timeLogger')
         };
 
         var arraySort = function(array, property, reverse) {
-            if (isUndefined(property)) {
+            if (isUndefined(array) || isUndefined(property)) {
                 return array;
             }
-            return array.sort(function (a, b) {
-                if (reverse) {
-                    return (b[property] > a[property] ? 1 : -1);
+            var positive = reverse ? -1 : 1;
+            var negative = reverse ? 1 : -1;
+
+            var mapped = array.map(function(item, intex) {
+                return {index: intex, value: item};
+            });
+            mapped.sort(function (a, b) {
+                if (a.value[property] === b.value[property]) {
+                    return a.index > b.index ? positive : negative;
                 } else {
-                    return (b[property] < a[property] ? 1 : -1);
+                    return a.value[property] > b.value[property] ? positive : negative;
                 }
+            });
+            return mapped.map(function(element){
+                return array[element.index];
             });
         };
 
         var arrayReduce = function(array, property, value) {
-            if (isUndefined(property)) {
+            if (isUndefined(array) || isUndefined(property)) {
                 return array;
             }
             return array.filter(function(item) {
