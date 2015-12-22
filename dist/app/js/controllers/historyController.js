@@ -2,7 +2,8 @@
  * Detail Controller
  */
 angular.module('timeLogger')
-    .controller('historyController', function($scope, $location, loggerService, commonService, historyDao) {
+    .controller('historyController', function($scope, $location, modalService, loggerService, commonService,
+            historyDao) {
 
         $scope.data = {
             barSize: commonService.toMillisecond(0, 0, 12),
@@ -12,12 +13,12 @@ angular.module('timeLogger')
             toDate: null
         };
 
-        $scope.orderer = {
+        $scope.order = {
             property: 'date',
             reverse: true
         };
 
-        $scope.reducer = {
+        $scope.reduce = {
             property: 'active',
             value: true
         };
@@ -38,6 +39,19 @@ angular.module('timeLogger')
                 $scope.history = initHistoryObject(history);
                 $scope.timeForm.$setPristine();
                 loggerService.info('HistoryController: update time frame.', history);
+            });
+        };
+
+        $scope.deleteDayFromHistory = function(day, $event) {
+            $event.stopPropagation();
+
+            modalService.confirm('Do you want delete this day from history?').then(function() {
+                historyDao.persistHistory(function(history) {
+                    return historyDao.deleteDayFromHistory(history, day.key);
+                }).then(function(history) {
+                    $scope.history = initHistoryObject(history);
+                    loggerService.info('HistoryController: day was deleted from history.', history);
+                });
             });
         };
 

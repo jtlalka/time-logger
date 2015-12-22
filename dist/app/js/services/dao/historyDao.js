@@ -120,6 +120,18 @@ angular.module('timeLogger')
             return history;
         };
 
+        this.deleteDayFromHistory = function(history, key) {
+            if (dayIsActive(history.daily[key])) {
+                history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
+                history.daily[key].active = false;
+            }
+            return history;
+        };
+
+        var dayIsActive = function(day) {
+            return commonService.isTrue(day.active);
+        };
+
         this.updateHistoryStatus = function(history, status, hoursPerDay) {
             return updateHistoryData(history, status.startTime, status.checkTime, status.type, hoursPerDay);
         };
@@ -153,21 +165,27 @@ angular.module('timeLogger')
 
         var updateHistoryOverTime = function(history, key, hoursPerDay) {
             if (commonService.isDefined(hoursPerDay)) {
-                var overTime = self.getDailyOverTime(history.daily[key], hoursPerDay);
-                var deltaOverTime = overTimeReducedOfPreviousValue(overTime, history.daily[key].overTime);
+                var oldOverTime = history.daily[key].overTime;
+                var newOverTime = self.getDailyOverTime(history.daily[key], hoursPerDay);
 
-                history.daily[key].overTime = overTime;
-                history.timeFrame = updateTimeFrameOverTime(history.timeFrame, key, deltaOverTime);
+                if (dayIsActive(history.daily[key]) && oldOverTime !== newOverTime) {
+                    history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, oldOverTime);
+                    history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, newOverTime);
+                }
+                history.daily[key].overTime = newOverTime;
             }
         };
 
-        var overTimeReducedOfPreviousValue = function(overTime, previousValue) {
-            return overTime - previousValue;
-        };
-
-        var updateTimeFrameOverTime = function(timeFrame, key, overTime) {
+        var increaseTimeFrameOverTime = function(timeFrame, key, overTime) {
             if (keyIsInTimeFrame(key, timeFrame.beginDate, timeFrame.endDate)) {
                 timeFrame.overTime += overTime;
+            }
+            return timeFrame;
+        };
+
+        var decreaseTimeFrameOverTime = function(timeFrame, key, overTime) {
+            if (keyIsInTimeFrame(key, timeFrame.beginDate, timeFrame.endDate)) {
+                timeFrame.overTime -= overTime;
             }
             return timeFrame;
         };
@@ -181,7 +199,7 @@ angular.module('timeLogger')
             var keyNumber = 0;
 
             for (var key in history.daily) {
-                if (history.daily.hasOwnProperty(key)) {
+                if (history.daily.hasOwnProperty(key) && dayIsActive(history.daily[key])) {
                     keyNumber = parseInt(key, 10);
 
                     if (keyIsInTimeFrame(keyNumber, beginDate, endDate)) {

@@ -26,12 +26,13 @@
             </label>
         </form>
         <div class="values">
-            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | reduceBy:reducer | sortBy:orderer) track by $index"
+            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | reduceBy:reduce | sortBy:order) track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">
                     <div class="block-left">
                         <span>{{day.date | date: 'dd-MM-yyyy'}}</span>
+                        <span data-ng-click="deleteDayFromHistory(day, $event)">[x]</span>
                     </div>
                     <div class="block-right">
                         <span class="regular">{{(day.types || {}) | countWorkTime | timeFormat: 'positive'}}</span> /
@@ -41,7 +42,7 @@
 
                 <div class="progress-bar">
                     <span data-ng-repeat="(type, value) in day.types track by $index"
-                          data-ng-class=":: type"
+                          data-ng-class="::type"
                           data-width-directive="value data.barSize"></span>
                 </div>
             </div>
