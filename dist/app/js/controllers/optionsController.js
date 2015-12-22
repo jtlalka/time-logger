@@ -2,8 +2,8 @@
  * Options Controller
  */
 angular.module('timeLogger')
-    .controller('optionsController',
-        function($scope, $routeParams, $timeout, loggerService, commonService, optionsDao) {
+    .controller('optionsController', function($scope, $routeParams, $timeout, modalService, loggerService,
+                                              commonService, optionsDao) {
 
         $scope.data = {
             minHoursPerWeek: 0,
@@ -54,5 +54,9 @@ angular.module('timeLogger')
                     $scope.optionsForm.$setPristine();
                 }, 200);
             });
+        };
+
+        $scope.showNotificationHelp = function() {
+            modalService.inform('This function will be implemented in future.');
         };
     });

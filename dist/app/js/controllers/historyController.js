@@ -3,7 +3,7 @@
  */
 angular.module('timeLogger')
     .controller('historyController', function($scope, $location, modalService, loggerService, commonService,
-            historyDao) {
+                                              historyDao) {
 
         $scope.data = {
             barSize: commonService.toMillisecond(0, 0, 12),
