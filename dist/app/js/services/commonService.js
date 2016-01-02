@@ -82,6 +82,12 @@ angular.module('timeLogger')
             return result;
         };
 
+        var moveToTime = function(dateFormat, hours, minutes, seconds, milliseconds) {
+            var date = new Date(dateFormat);
+            date.setHours(hours, minutes, seconds, milliseconds);
+            return date;
+        };
+
         var copyProperty = function(objectFrom, objectTo) {
             if (isUndefined(objectTo)) {
                 objectTo = {};
@@ -146,6 +152,7 @@ angular.module('timeLogger')
             isUndefined: isUndefined,
             toSeconds: toSeconds,
             toMillisecond: toMillisecond,
+            moveToTime: moveToTime,
             copyProperty: copyProperty,
             toArray: toArray,
             arraySort: arraySort,

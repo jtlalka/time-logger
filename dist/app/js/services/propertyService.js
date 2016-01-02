@@ -6,7 +6,7 @@ angular.module('timeLogger')
 
         var defValues = Object.freeze({
             intervalTime: commonService.toMillisecond(30),
-            precisionTime: commonService.toMillisecond(90),
+            precisionTime: commonService.toMillisecond(60),
             detectionTime: commonService.toMillisecond(0, 5),
             dbVersion: 0,
             loggerLevel: 3,

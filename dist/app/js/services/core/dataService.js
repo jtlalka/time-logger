@@ -44,26 +44,33 @@ angular.module('timeLogger')
 
             statusDao.getStatus().then(function(data) {
                 var currentTime = args.currentTime;
-                var type = setType(args.type, data.type);
+                var currentType = setType(args.type, data.type);
 
                 if (isFirstUpdate(data.startTime)) {
-                    createStatusProxy(currentTime, type, callback);
+                    createStatusProxy(currentTime, currentType, callback);
 
                 } else if (isNextDay(data.checkTime, currentTime)) {
+                    data.checkTime = moveToEnd(data.checkTime, precisionTime);
+                    currentTime = moveToStart(currentTime, precisionTime);
+
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, true);
-                    createStatusProxy(currentTime, type, callback);
+                    createStatusProxy(currentTime, currentType, callback);
 
                 } else if (isNextTime(data.checkTime, currentTime, precisionTime)) {
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, false);
-                    createStatusProxy(currentTime, type, callback);
+                    createStatusProxy(currentTime, currentType, callback);
 
                     if (isLoggedTime(data.checkTime, currentTime, options.lockedTime)) {
                         updateHistoryProxy(data.checkTime, currentTime, self.type.LOCKED, false);
                     }
 
-                } else if (isTypeChange(data.type, type)) {
-                    updateHistoryProxy(data.startTime, currentTime, data.type, false);
-                    createStatusProxy(currentTime, type, callback);
+                } else if (isTypeChange(data.type, args.type)) {
+                    if (isInPrecisionFrame(data.startTime, currentTime, precisionTime)) {
+                        updateStatusProxy(data.startTime, currentTime, currentType, callback);
+                    } else {
+                        updateHistoryProxy(data.startTime, currentTime, data.type, false);
+                        createStatusProxy(currentTime, currentType, callback);
+                    }
 
                 } else {
                     updateStatusProxy(data.startTime, currentTime, data.type, callback);
@@ -84,11 +91,35 @@ angular.module('timeLogger')
         };
 
         var isLoggedTime = function(checkTime, currentTime, maxLoggedTime) {
-            return (currentTime - checkTime) < maxLoggedTime;
+            return Math.abs(currentTime - checkTime) < maxLoggedTime;
         };
 
         var isTypeChange = function(oldType, newType) {
             return newType && newType !== oldType;
+        };
+
+        var moveToStart = function(checkTime, precision) {
+            var date = commonService.moveToTime(checkTime, 0, 0, 0, 0);
+
+            if (isInPrecisionFrame(checkTime, date.getTime(), precision)) {
+                return date.getTime();
+            } else {
+                return checkTime;
+            }
+        };
+
+        var moveToEnd = function(checkTime, precision) {
+            var date = commonService.moveToTime(checkTime, 23, 59, 59, 0);
+
+            if (isInPrecisionFrame(checkTime, date.getTime(), precision)) {
+                return date.getTime();
+            } else {
+                return checkTime;
+            }
+        };
+
+        var isInPrecisionFrame = function(value1, value2, precision) {
+            return Math.abs(value1 - value2) < precision;
         };
 
         var defActive = function(type) {
