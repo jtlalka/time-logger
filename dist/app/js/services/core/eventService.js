@@ -6,6 +6,7 @@ angular.module('timeLogger')
 
         var detectionTime = propertyService.getDetectionTime();
         var intervalTime = propertyService.getIntervalTime();
+        var intervalFunc = null;
 
         this.initChromeEvents = function() {
             onInstalledEvent();
@@ -19,6 +20,7 @@ angular.module('timeLogger')
                 loggerService.trace('EventService: onInstalled event.');
                 updateService.checkUpdates(function() {
                     dataService.checkStatus(dataService.type.ACTIVE);
+                    startCheckStatusLoop();
                 });
             });
         };
@@ -27,6 +29,7 @@ angular.module('timeLogger')
             chrome.runtime.onStartup.addListener(function() {
                 loggerService.trace('EventService: onStartup event.');
                 dataService.checkStatus(dataService.type.ACTIVE);
+                startCheckStatusLoop();
             });
         };
 
@@ -34,6 +37,7 @@ angular.module('timeLogger')
             chrome.runtime.onSuspend.addListener(function() {
                 loggerService.trace('EventService: onSuspend event.');
                 dataService.checkStatus(dataService.type.LOCKED);
+                stopCheckStatusLoop();
             });
         };
 
@@ -44,12 +48,27 @@ angular.module('timeLogger')
             chrome.idle.onStateChanged.addListener(function(idleState) {
                 loggerService.trace('EventService: onStateChanged event.');
                 dataService.checkStatus(idleState);
+                resetCheckStatusLoop();
             });
         };
 
-        this.initIntervalEvents = function() {
-            $interval(function() {
-                dataService.checkStatus();
-            }, intervalTime);
+        var startCheckStatusLoop = function() {
+            if (intervalFunc === null) {
+                intervalFunc = $interval(function() {
+                    dataService.checkStatus();
+                }, intervalTime, 0, false);
+            }
+        };
+
+        var stopCheckStatusLoop = function() {
+            if (intervalFunc !== null) {
+                $interval.cancel(intervalFunc);
+                intervalFunc = null;
+            }
+        };
+
+        var resetCheckStatusLoop = function() {
+            stopCheckStatusLoop();
+            startCheckStatusLoop();
         };
     });

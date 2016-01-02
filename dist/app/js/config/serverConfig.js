@@ -9,7 +9,6 @@ angular.module('timeLogger', []);
  */
 angular.module('timeLogger').run(function(eventService) {
     eventService.initChromeEvents();
-    eventService.initIntervalEvents();
 });
 
 
