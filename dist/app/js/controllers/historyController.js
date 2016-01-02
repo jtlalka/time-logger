@@ -42,12 +42,12 @@ angular.module('timeLogger')
             });
         };
 
-        $scope.deleteDayFromHistory = function(day, $event) {
+        $scope.disableDayFromHistory = function(day, $event) {
             $event.stopPropagation();
 
             modalService.confirm('Do you want delete this day from history?').then(function() {
                 historyDao.persistHistory(function(history) {
-                    return historyDao.deleteDayFromHistory(history, day.key);
+                    return historyDao.disableDayFromHistory(history, day.key);
                 }).then(function(history) {
                     $scope.history = initHistoryObject(history);
                     loggerService.info('HistoryController: day was deleted from history.', history);

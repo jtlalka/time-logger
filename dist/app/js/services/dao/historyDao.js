@@ -120,7 +120,15 @@ angular.module('timeLogger')
             return history;
         };
 
-        this.deleteDayFromHistory = function(history, key) {
+        this.enableDayFromHistory = function(history, key) {
+            if (dayIsNotActive(history.daily[key])) {
+                history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
+                history.daily[key].active = true;
+            }
+            return history;
+        };
+
+        this.disableDayFromHistory = function(history, key) {
             if (dayIsActive(history.daily[key])) {
                 history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
                 history.daily[key].active = false;
@@ -132,6 +140,10 @@ angular.module('timeLogger')
             return commonService.isTrue(day.active);
         };
 
+        var dayIsNotActive = function(day) {
+            return commonService.isFalse(day.active);
+        };
+
         this.updateHistoryStatus = function(history, status, hoursPerDay) {
             return updateHistoryData(history, status.startTime, status.checkTime, status.type, hoursPerDay);
         };
@@ -140,7 +152,7 @@ angular.module('timeLogger')
             var key = self.dateToInteger(start);
             var delta = self.getDeltaTime(start, stop);
 
-            if (!history.daily[key]) {
+            if (commonService.isUndefined(history.daily[key])) {
                 history.daily[key] = dataModel.getHistoryDailyEntry();
             }
 
@@ -160,7 +172,14 @@ angular.module('timeLogger')
         };
 
         var updateHistoryDailyValue = function(history, key, start, stop, type) {
-            history.daily[key].values.push(dataModel.getHistoryDailyValue(start, stop, type));
+            var newStatus = dataModel.getHistoryDailyValue(start, stop, type);
+            var lastStatus = history.daily[key].values.slice(-1).pop();
+
+            if (lastStatus && lastStatus.type === newStatus.type && lastStatus.stop === newStatus.start) {
+                lastStatus.stop = newStatus.stop;
+            } else {
+                history.daily[key].values.push(newStatus);
+            }
         };
 
         var updateHistoryOverTime = function(history, key, hoursPerDay) {

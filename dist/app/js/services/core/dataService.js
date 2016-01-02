@@ -41,20 +41,21 @@ angular.module('timeLogger')
         };
 
         var checkStatusAction = function(args, callback) {
-            var currentTime = args.currentTime;
-            var type = args.type;
 
             statusDao.getStatus().then(function(data) {
+                var currentTime = args.currentTime;
+                var type = setType(args.type, data.type);
+
                 if (isFirstUpdate(data.startTime)) {
                     createStatusProxy(currentTime, type, callback);
 
-                } else if (isInvalidDay(data.checkTime, currentTime)) {
+                } else if (isNextDay(data.checkTime, currentTime)) {
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, true);
                     createStatusProxy(currentTime, type, callback);
 
-                } else if (isInvalidTime(data.checkTime, currentTime, precisionTime)) {
+                } else if (isNextTime(data.checkTime, currentTime, precisionTime)) {
                     updateHistoryProxy(data.startTime, data.checkTime, data.type, false);
-                    createStatusProxy(currentTime, defActive(type), callback);
+                    createStatusProxy(currentTime, type, callback);
 
                     if (isLoggedTime(data.checkTime, currentTime, options.lockedTime)) {
                         updateHistoryProxy(data.checkTime, currentTime, self.type.LOCKED, false);
@@ -74,12 +75,12 @@ angular.module('timeLogger')
             return commonService.isUndefined(startTime);
         };
 
-        var isInvalidDay = function(checkTime, currentTime) {
+        var isNextDay = function(checkTime, currentTime) {
             return historyDao.dateToInteger(checkTime) !== historyDao.dateToInteger(currentTime);
         };
 
-        var isInvalidTime = function(checkTime, currentTime, deltaTime) {
-            return (currentTime - checkTime) > deltaTime;
+        var isNextTime = function(checkTime, currentTime, deltaTime) {
+            return Math.abs(currentTime - checkTime) > deltaTime;
         };
 
         var isLoggedTime = function(checkTime, currentTime, maxLoggedTime) {

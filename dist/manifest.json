@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Time Logger",
-    "version": "0.3",
+    "version": "0.4",
 
     "author": "Jakub Tlałka",
     "short_name": "Time Logger",
