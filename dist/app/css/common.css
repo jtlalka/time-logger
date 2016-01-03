@@ -82,3 +82,43 @@ div.summary > span.info {
 div.summary > span.warn {
     color: #aa0000;
 }
+
+
+/* ---- scroll-bar -------------------------------------------------------------------------------------------------- */
+div::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+div::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+div::-webkit-scrollbar-track {
+    background-color: rgba(200, 200, 200, 0.2);
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.6);
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0);
+    min-width: 100px;
+    min-height: 100px;
+}
+
+div::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:single-button {
+    background-color: rgba(100, 100, 100, 0.8);
+}
+
+div::-webkit-scrollbar-thumb:window-inactive {
+    background-color: rgba(100, 100, 100, 0.4);
+}
+
+div::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
