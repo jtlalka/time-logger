@@ -1,6 +1,14 @@
 /**
- * EXT-CLASS
+ *      ______ _  __ ______      ______ __     ___    _____ _____
+ *     / ____/| |/ //_  __/     / ____// /    /   |  / ___// ___/
+ *    / __/   |   /  / /______ / /    / /    / /| |  \__ \ \__ \
+ *   / /___  /   |  / //_____// /___ / /___ / ___ | ___/ /___/ /
+ *  /_____/ /_/|_| /_/        \____//_____//_/  |_|/____//____/
+ *
+ *
  * Simple extension for CSS class
+ *
+ * Icons from: http://www.w3schools.com/charsets/ref_utf_symbols.asp
  *
  */
 
@@ -225,7 +233,176 @@ input[type=checkbox] {
 }
 
 
-/****** cursor ********************************************************************************************************/
+/****** icons *********************************************************************************************************/
+.icon:before {
+    font-family: Monaco, monospace;
+    font-size: small;
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon-plus:before {
+    content: "\2b"
+}
+
+.icon-minus:before {
+    content: "\2d";
+}
+
+.icon-remove:before {
+    content: "\78";
+}
+
+.icon-redo:before {
+    content: "\21aa";
+}
+
+.icon-undo:before {
+    content: "\21a9";
+}
+
+.icon-refresh:before {
+    content: "\21bb";
+}
+
+.icon-star-on:before {
+    content: "\2605";
+}
+
+.icon-star-off:before {
+    content: "\2606";
+}
+
+.icon-double-arrow:before {
+    content: "\bb";
+}
+
+.icon-arrow-up:before {
+    content: "\25b2";
+}
+
+.icon-arrow-down:before {
+    content: "\25bc";
+}
+
+.icon-arrow-left:before {
+    content: "\25c4";
+}
+
+.icon-arrow-right:before {
+    content: "\25ba";
+}
+
+.icon-li-point:before {
+    content: "\2022";
+}
+
+.icon-li-arrow:before {
+    content: "\2023";
+}
+
+.icon-li-star:before {
+    content: "\22c6";
+}
+
+.icon-math-less-than:before {
+    content: "\3c";
+}
+
+.icon-math-greater-than:before {
+    content: "\3e";
+}
+
+.icon-math-sum:before {
+    content: "\2211";
+}
+
+.icon-math-infinity:before {
+    content: "\221e";
+}
+
+.icon-math-tilda:before {
+    content: "\223c";
+}
+
+.icon-math-almost:before {
+    content: "\2248";
+}
+
+.icon-box-plus:before {
+    content: "\229e";
+}
+
+.icon-box-minus:before {
+    content: "\229f";
+}
+
+.icon-box-filled:before {
+    content: "\25a0";
+}
+
+.icon-box-empty:before {
+    content: "\25a1";
+}
+
+.icon-circled-plus:before {
+    content: "\2295";
+}
+
+.icon-circled-minus:before {
+    content: "\2296";
+}
+
+.icon-circled-times:before {
+    content: "\2297";
+}
+
+.icon-circled-divided:before {
+    content: "\2298";
+}
+
+.icon-circled-dot:before {
+    content: "\2299";
+}
+
+.icon-circled-equals:before {
+    content: "\229c";
+}
+
+.icon-circled-dash:before {
+    content: "\229d";
+}
+
+.icon-card-spade:before {
+    content: "\2660";
+}
+
+.icon-card-club:before {
+    content: "\2663";
+}
+
+.icon-card-heart:before {
+    content: "\2665";
+}
+
+.icon-card-diamond:before {
+    content: "\2666";
+}
+
+.icon-trade-copy:before {
+    content: "\a9";
+}
+
+.icon-trade-registered:before {
+    content: "\ae";
+}
+
+.icon-trade-mark:before {
+    content: "\2122";
+}
+
+
+/****** cursors *******************************************************************************************************/
 .cursor-click {
     cursor: pointer;
 }
