@@ -120,7 +120,7 @@ angular.module('timeLogger')
             return history;
         };
 
-        this.enableDayFromHistory = function(history, key) {
+        this.enableDayToHistory = function(history, key) {
             if (dayIsNotActive(history.daily[key])) {
                 history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
                 history.daily[key].active = true;
@@ -133,6 +133,14 @@ angular.module('timeLogger')
                 history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
                 history.daily[key].active = false;
             }
+            return history;
+        };
+
+        this.deleteDayFromHistory = function(history, key) {
+            if (dayIsActive(history.daily[key])) {
+                history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
+            }
+            delete history.daily[key];
             return history;
         };
 

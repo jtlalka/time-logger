@@ -26,13 +26,27 @@
             </label>
         </form>
         <div class="values">
-            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | reduceBy:reduce | sortBy:order) track by $index"
+            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | sortBy:order) track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">
                     <div class="block-left">
                         <span>{{day.date | date: 'dd-MM-yyyy'}}</span>
-                        <span class="text-link" data-ng-click="disableDayFromHistory(day, $event)">[x]</span>
+                        <span class="text-link"
+                              data-ng-click="enableDayToHistory(day, $event)"
+                              data-ng-show="!day.active">
+                            <span>[<i class="icon icon-plus"></i>]</span>
+                        </span>
+                        <span class="text-link"
+                              data-ng-click="disableDayFromHistory(day, $event)"
+                              data-ng-show="day.active">
+                            <span>[<i class="icon icon-minus"></i>]</span>
+                        </span>
+                        <span class="text-link"
+                              data-ng-click="deleteDayFromHistory(day, $event)"
+                              data-ng-show="false">
+                            <span>[<i class="icon icon-remove"></i>]</span>
+                        </span>
                     </div>
                     <div class="block-right">
                         <span class="regular">{{(day.types || {}) | countWorkTime | timeFormat: 'positive'}}</span> /
@@ -40,7 +54,7 @@
                     </div>
                 </div>
 
-                <div class="progress-bar">
+                <div class="progress-bar" data-ng-show="day.active">
                     <span data-ng-repeat="(type, value) in day.types track by $index"
                           data-ng-class="::type"
                           data-width-directive="value data.barSize"></span>

@@ -18,11 +18,6 @@ angular.module('timeLogger')
             reverse: true
         };
 
-        $scope.reduce = {
-            property: 'active',
-            value: true
-        };
-
         $scope.refresh = function() {
             historyDao.getHistory().then(function(data) {
                 $scope.history = initHistoryObject(data);
@@ -42,12 +37,34 @@ angular.module('timeLogger')
             });
         };
 
+        $scope.enableDayToHistory = function(day, $event) {
+            $event.stopPropagation();
+
+            historyDao.persistHistory(function(history) {
+                return historyDao.enableDayToHistory(history, day.key);
+            }).then(function(history) {
+                $scope.history = initHistoryObject(history);
+                loggerService.info('HistoryController: day was enable in history.', history);
+            });
+        };
+
         $scope.disableDayFromHistory = function(day, $event) {
+            $event.stopPropagation();
+
+            historyDao.persistHistory(function(history) {
+                return historyDao.disableDayFromHistory(history, day.key);
+            }).then(function(history) {
+                $scope.history = initHistoryObject(history);
+                loggerService.info('HistoryController: day was disabled from history.', history);
+            });
+        };
+
+        $scope.deleteDayFromHistory = function(day, $event) {
             $event.stopPropagation();
 
             modalService.confirm('Do you want delete this day from history?').then(function() {
                 historyDao.persistHistory(function(history) {
-                    return historyDao.disableDayFromHistory(history, day.key);
+                    return historyDao.deleteDayFromHistory(history, day.key);
                 }).then(function(history) {
                     $scope.history = initHistoryObject(history);
                     loggerService.info('HistoryController: day was deleted from history.', history);
