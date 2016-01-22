@@ -33,20 +33,14 @@
                     <div class="block-left">
                         <span>{{day.date | date: 'dd-MM-yyyy'}}</span>
                         <span class="text-link"
-                              data-ng-click="enableDayToHistory(day, $event)"
-                              data-ng-show="!day.active">
-                            <span>[<i class="icon icon-plus"></i>]</span>
-                        </span>
+                                data-ng-click="disableDayFromHistory(day, $event)"
+                                data-ng-show="day.active">[<i class="icon icon-minus"></i>]</span>
                         <span class="text-link"
-                              data-ng-click="disableDayFromHistory(day, $event)"
-                              data-ng-show="day.active">
-                            <span>[<i class="icon icon-minus"></i>]</span>
-                        </span>
+                                data-ng-click="enableDayToHistory(day, $event)"
+                                data-ng-show="!day.active">[<i class="icon icon-plus"></i>]</span>
                         <span class="text-link"
-                              data-ng-click="deleteDayFromHistory(day, $event)"
-                              data-ng-show="false">
-                            <span>[<i class="icon icon-remove"></i>]</span>
-                        </span>
+                                data-ng-click="deleteDayFromHistory(day, $event)"
+                                data-ng-show="!day.active">[<i class="icon icon-remove"></i>]</span>
                     </div>
                     <div class="block-right">
                         <span class="regular">{{(day.types || {}) | countWorkTime | timeFormat: 'positive'}}</span> /
@@ -54,9 +48,10 @@
                     </div>
                 </div>
 
-                <div class="progress-bar" data-ng-show="day.active">
+                <div class="progress-bar"
+                        data-ng-if="day.active">
                     <span data-ng-repeat="(type, value) in day.types track by $index"
-                          data-ng-class="::type"
+                          data-ng-class="type"
                           data-width-directive="value data.barSize"></span>
                 </div>
             </div>
