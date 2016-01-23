@@ -2,58 +2,70 @@
  * Chrome Event Service
  */
 angular.module('timeLogger')
-    .service('updateService', function($q, storageService, propertyService, loggerService,
+    .service('updateService', function($q, storageService, propertyService, loggerService, commonService,
             optionsDao, historyDao, statusDao) {
 
-        var versionManager = storageService.getLocalManager('dbVersion');
-        var currentVersion = propertyService.getDbVersion();
-
         this.checkUpdates = function(callback) {
-            versionManager.persist(currentVersion, function(version) {
-                if (currentVersion === version) {
-                    callback();
+            var versionManager = storageService.getLocalManager('dbVersion');
+            var currentVersion = propertyService.getDbVersion();
+
+            versionManager.persist(currentVersion, function(previousVersion) {
+                if (currentVersion > previousVersion) {
+                    updateDataSource(previousVersion, currentVersion).then(callback);
                 } else {
-                    updateDataStored(version).then(callback);
+                    callback();
                 }
                 return currentVersion;
             });
         };
 
-        var updateDataStored = function(version) {
-            var optionsPromise = updateOptions(version);
-            var historyPromise = updateHistory(version);
-            var statusPromise = updateStatus(version);
+        var updateDataSource = function(previousVersion, currentVersion) {
+            var optionsPromise = updateOptions(previousVersion, currentVersion);
+            var historyPromise = updateHistory(previousVersion, currentVersion);
+            var statusPromise = updateStatus(previousVersion, currentVersion);
 
             return $q.all([optionsPromise, historyPromise, statusPromise]);
         };
 
-        var updateOptions = function(version) {
+        var triggerUpdates = function(updates, data, previousVersion, currentVersion) {
+            var keyNumber = 0;
+            for (var key in updates) {
+                if (updates.hasOwnProperty(key)) {
+                    keyNumber = parseInt(key, 10);
+
+                    if (keyNumber > previousVersion && keyNumber <= currentVersion) {
+                        data = updates[key](data);
+                        loggerService.trace('UpdateService: updates object to version: ' + key, data);
+                    }
+                }
+            }
+            return data;
+        };
+
+        var updateOptions = function(previousVersion, currentVersion) {
+            var updates = {
+            };
+
             return optionsDao.persistOptions(function(data) {
-                switch (version) {
-                    case 1:
-                }
-                loggerService.trace('UpdateService: options updates.', data);
-                return data;
+                return triggerUpdates(updates, data, previousVersion, currentVersion);
             });
         };
 
-        var updateHistory = function(version) {
+        var updateHistory = function(previousVersion, currentVersion) {
+            var updates = {
+            };
+
             return historyDao.persistHistory(function(data) {
-                switch (version) {
-                    case 1:
-                }
-                loggerService.trace('UpdateService: history updates.', data);
-                return data;
+                return triggerUpdates(updates, data, previousVersion, currentVersion);
             });
         };
 
-        var updateStatus = function(version) {
+        var updateStatus = function(previousVersion, currentVersion) {
+            var updates = {
+            };
+
             return statusDao.persistStatus(function(data) {
-                switch (version) {
-                    case 1:
-                }
-                loggerService.trace('UpdateService: status updates.', data);
-                return data;
+                return triggerUpdates(updates, data, previousVersion, currentVersion);
             });
         };
     });
