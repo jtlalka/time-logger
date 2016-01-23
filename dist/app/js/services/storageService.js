@@ -12,10 +12,10 @@ angular.module('timeLogger')
             var self = this;
             var dbTable = name;
 
-            this.get = function(object) {
+            this.get = function(defaultObject) {
                 return $q(function(resolve) {
-                    chrome.storage.sync.get(convertToStorageObject(dbTable, object), function(data) {
-                        resolve(getObjectFromStorage(data, dbTable, object));
+                    chrome.storage.sync.get(convertToStorageObject(dbTable, defaultObject), function(data) {
+                        resolve(getObjectFromStorage(data, dbTable, defaultObject));
                     });
                 });
             };
@@ -36,8 +36,8 @@ angular.module('timeLogger')
                 });
             };
 
-            this.persist = function(object, dataCallback) {
-                return self.get(object).then(function(data) {
+            this.persist = function(defaultObject, dataCallback) {
+                return self.get(defaultObject).then(function(data) {
                     return self.set(dataCallback(data));
                 });
             };
@@ -48,10 +48,10 @@ angular.module('timeLogger')
             var self = this;
             var dbTable = name;
 
-            this.get = function(object) {
+            this.get = function(defaultObject) {
                 return $q(function(resolve) {
-                    chrome.storage.local.get(convertToStorageObject(dbTable, object), function(data) {
-                        resolve(getObjectFromStorage(data, dbTable, object));
+                    chrome.storage.local.get(convertToStorageObject(dbTable, defaultObject), function(data) {
+                        resolve(getObjectFromStorage(data, dbTable, defaultObject));
                     });
                 });
             };
@@ -72,8 +72,8 @@ angular.module('timeLogger')
                 });
             };
 
-            this.persist = function(object, dataCallback) {
-                return self.get(object).then(function(data) {
+            this.persist = function(defaultObject, dataCallback) {
+                return self.get(defaultObject).then(function(data) {
                     return self.set(dataCallback(data));
                 });
             };
@@ -103,9 +103,9 @@ angular.module('timeLogger')
             return storageObject;
         };
 
-        var getObjectFromStorage = function(object, property, defaultObject) {
-            if (object && object[property]) {
-                return object[property];
+        var getObjectFromStorage = function(storageObject, key, defaultObject) {
+            if (storageObject && storageObject[key] !== undefined) {
+                return storageObject[key];
             } else {
                 return defaultObject;
             }
