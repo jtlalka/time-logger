@@ -8,7 +8,6 @@ angular.module('timeLogger')
             intervalTime: commonService.toMillisecond(30),
             precisionTime: commonService.toMillisecond(60),
             detectionTime: commonService.toMillisecond(0, 5),
-            dbVersion: 0,
             loggerLevel: 3,
             loggerParse: 'false'
         });
@@ -23,10 +22,6 @@ angular.module('timeLogger')
 
         this.getDetectionTime = function() {
             return getSeconds('detectionTime');
-        };
-
-        this.getDbVersion = function() {
-            return getNumber('dbVersion');
         };
 
         this.getLoggerLevel = function() {
