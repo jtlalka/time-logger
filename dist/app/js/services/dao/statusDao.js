@@ -20,14 +20,6 @@ angular.module('timeLogger')
             return localManager.get(dataModel.getStatusEntry(null, null, null));
         };
 
-        this.createStatus = function(startTime, type) {
-            return localManager.set(dataModel.getStatusEntry(startTime, startTime, type));
-        };
-
-        this.updateStatus = function(startTime, checkTime, type) {
-            return localManager.set(dataModel.getStatusEntry(startTime, checkTime, type));
-        };
-
         this.persistStatus = function(dataCallback) {
             return localManager.persist(dataModel.getStatusEntry(null, null, null), dataCallback);
         };

@@ -18,7 +18,7 @@ angular.module('timeLogger')
         var onInstalledEvent = function() {
             chrome.runtime.onInstalled.addListener(function() {
                 loggerService.trace('EventService: onInstalled event.');
-                updateService.checkUpdates(function() {
+                updateService.checkUpdates().then(function() {
                     dataService.checkStatus(dataService.type.ACTIVE);
                     startCheckStatusLoop();
                 });

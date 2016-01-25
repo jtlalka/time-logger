@@ -42,39 +42,44 @@ angular.module('timeLogger')
 
         var checkStatusAction = function(args, callback) {
 
-            statusDao.getStatus().then(function(data) {
+            statusDao.persistStatus(function(data) {
                 var currentTime = args.currentTime;
                 var currentType = setType(args.type, data.type);
+                var status = angular.copy(data);
 
                 if (isFirstUpdate(data.startTime)) {
-                    createStatusProxy(currentTime, currentType, callback);
+                    createStatus(status, currentTime, currentType);
 
                 } else if (isNextDay(data.checkTime, currentTime)) {
                     data.checkTime = moveToEnd(data.checkTime, precisionTime);
                     currentTime = moveToStart(currentTime, precisionTime);
 
-                    updateHistoryProxy(data.startTime, data.checkTime, data.type, true);
-                    createStatusProxy(currentTime, currentType, callback);
+                    updateHistory(data.startTime, data.checkTime, data.type, true);
+                    createStatus(status, currentTime, currentType);
 
                 } else if (isNextTime(data.checkTime, currentTime, precisionTime)) {
-                    updateHistoryProxy(data.startTime, data.checkTime, data.type, false);
-                    createStatusProxy(currentTime, currentType, callback);
-
+                    updateHistory(data.startTime, data.checkTime, data.type, false);
                     if (isLoggedTime(data.checkTime, currentTime, options.lockedTime)) {
-                        updateHistoryProxy(data.checkTime, currentTime, self.type.LOCKED, false);
+                        updateHistory(data.checkTime, currentTime, self.type.LOCKED, false);
                     }
+                    createStatus(status, currentTime, currentType);
 
                 } else if (isTypeChange(data.type, args.type)) {
                     if (isInPrecisionFrame(data.startTime, currentTime, precisionTime)) {
-                        updateStatusProxy(data.startTime, currentTime, currentType, callback);
+                        updateStatus(status, data.startTime, currentTime, currentType);
                     } else {
-                        updateHistoryProxy(data.startTime, currentTime, data.type, false);
-                        createStatusProxy(currentTime, currentType, callback);
+                        updateHistory(data.startTime, currentTime, data.type, false);
+                        createStatus(status, currentTime, currentType);
                     }
 
                 } else {
-                    updateStatusProxy(data.startTime, currentTime, data.type, callback);
+                    updateStatus(status, data.startTime, currentTime, data.type);
                 }
+                return status;
+
+            }).then(function(status) {
+                loggerService.trace('DataService: update status.', status);
+                callback();
             });
         };
 
@@ -130,21 +135,21 @@ angular.module('timeLogger')
             return type ? type : defType;
         };
 
-        var createStatusProxy = function(currentTime, type, callback) {
-            statusDao.createStatus(currentTime, defActive(type)).then(function(status) {
-                loggerService.trace('DataService: create status.', status);
-                callback();
-            });
+        var createStatus = function(status, currentTime, type) {
+            status.startTime = currentTime;
+            status.checkTime = currentTime;
+            status.type = defActive(type);
+            return status;
         };
 
-        var updateStatusProxy = function(startTime, currentTime, type, callback) {
-            statusDao.updateStatus(startTime, currentTime, defActive(type)).then(function(status) {
-                loggerService.trace('DataService: update status.', status);
-                callback();
-            });
+        var updateStatus = function(status, startTime, currentTime, type) {
+            status.startTime = startTime;
+            status.checkTime = currentTime;
+            status.type = defActive(type);
+            return status;
         };
 
-        var updateHistoryProxy = function(startTime, currentTime, type, nextDay) {
+        var updateHistory = function(startTime, currentTime, type, nextDay) {
             historyStack.push(updateHistoryAction, {
                 status: statusDao.getStatusObject(startTime, currentTime, type),
                 nextDay: nextDay
