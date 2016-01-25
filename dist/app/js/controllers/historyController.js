@@ -3,7 +3,7 @@
  */
 angular.module('timeLogger')
     .controller('historyController', function($scope, $location, modalService, loggerService, commonService,
-                                              historyDao) {
+            historyDao) {
 
         $scope.data = {
             barSize: commonService.toMillisecond(0, 0, 12),
@@ -73,8 +73,8 @@ angular.module('timeLogger')
         };
 
         var initHistoryObject = function(history) {
-            history = historyDao.filterTimeFrame(history);
-            history = historyDao.filterEmptyDays(history);
+            history = historyDao.filterTimeFrameDays(history);
+            history = historyDao.filterCalculatedDays(history);
 
             initTimeFrameScope(history.timeFrame);
             return extendHistoryObject(history);

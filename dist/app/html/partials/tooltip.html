@@ -44,7 +44,7 @@
                     <th><span class="text-click" data-order-directive="order 'start'">Begin</span></th>
                     <th><span class="text-click" data-order-directive="order 'stop'">End</span></th>
                     <th><span class="text-click" data-order-directive="order 'type'">Type</span></th>
-                    <th><span class="text-click" data-order-directive="order 'delta'">Time</span></th>
+                    <th colspan="2"><span class="text-click" data-order-directive="order 'delta'">Time</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +53,11 @@
                     <td>{{value.stop | date: 'HH:mm:ss'}}</td>
                     <td>{{value.type}}</td>
                     <td>{{value.delta | timeFormat}}</td>
+                    <td class="table-cell-1p text-center">
+                        <span class="text-link" data-ng-click="deleteDailyValue(value)">
+                            [<i class="icon icon-remove"></i>]
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>

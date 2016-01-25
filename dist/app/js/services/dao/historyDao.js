@@ -21,6 +21,7 @@ angular.module('timeLogger')
             getHistoryDailyEntry: function() {
                 return {
                     active: true,
+                    calculated: false,
                     overTime: 0,
                     types: {},
                     values: []
@@ -45,6 +46,14 @@ angular.module('timeLogger')
 
         this.persistHistory = function(dataCallback) {
             return localManager.persist(dataModel.getHistoryEntry(), dataCallback);
+        };
+
+        this.isPresentDay = function(dateFormat) {
+            return self.dateToInteger(dateFormat) === self.dateToInteger(Date.now());
+        };
+
+        this.isPastDay = function(dateFormat) {
+            return self.dateToInteger(dateFormat) !== self.dateToInteger(Date.now());
         };
 
         this.dateToInteger = function(dateFormat) {
@@ -92,7 +101,7 @@ angular.module('timeLogger')
             return workTime;
         };
 
-        this.filterTimeFrame = function(history) {
+        this.filterTimeFrameDays = function(history) {
             var beginDate = history.timeFrame.beginDate;
             var endDate = history.timeFrame.endDate;
             var keyNumber = 0;
@@ -109,12 +118,10 @@ angular.module('timeLogger')
             return history;
         };
 
-        this.filterEmptyDays = function(history) {
+        this.filterCalculatedDays = function(history) {
             for (var key in history.daily) {
-                if (history.daily.hasOwnProperty(key)) {
-                    if (history.daily[key].values.length > 0 && history.daily[key].overTime === 0) {
-                        delete history.daily[key];
-                    }
+                if (history.daily.hasOwnProperty(key) && !history.daily[key].calculated) {
+                    delete history.daily[key];
                 }
             }
             return history;
@@ -141,6 +148,25 @@ angular.module('timeLogger')
                 history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, history.daily[key].overTime);
             }
             delete history.daily[key];
+            return history;
+        };
+
+        this.deleteDailyValue = function(history, key, index) {
+            var value = history.daily[key].values[index];
+
+            if (commonService.isDefined(value)) {
+                var delta = self.getDeltaTime(value.start, value.stop);
+
+                if (history.daily[key].calculated) {
+                    history.daily[key].overTime -= delta;
+
+                    if (dayIsActive(history.daily[key])) {
+                        history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, delta);
+                    }
+                }
+                history.daily[key].types[value.type] -= delta;
+                history.daily[key].values.splice(index, 1);
+            }
             return history;
         };
 
@@ -200,6 +226,7 @@ angular.module('timeLogger')
                     history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, newOverTime);
                 }
                 history.daily[key].overTime = newOverTime;
+                history.daily[key].calculated = true;
             }
         };
 

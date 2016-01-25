@@ -2,7 +2,7 @@
  * Tooltip Controller
  */
 angular.module('timeLogger')
-    .controller('tooltipController', function($scope, $routeParams, $q, loggerService, commonService,
+    .controller('tooltipController', function($scope, $routeParams, $q, loggerService, modalService, commonService,
             optionsDao, historyDao, statusDao) {
 
         $scope.data = {
@@ -31,7 +31,10 @@ angular.module('timeLogger')
             } else {
                 $scope.data.viewDate = new Date();
             }
+            refreshControllerData();
+        };
 
+        var refreshControllerData = function() {
             var optionsPromise = optionsDao.getOptions();
             var historyPromise = historyDao.getHistory();
             var statusPromise = statusDao.getStatus();
@@ -49,7 +52,7 @@ angular.module('timeLogger')
         };
 
         var refreshHistoryData = function(history, status) {
-            if (historyDao.dateToInteger($scope.data.viewDate) === historyDao.dateToInteger(Date.now())) {
+            if (historyDao.isPresentDay($scope.data.viewDate)) {
                 history = historyDao.updateHistoryStatus(history, status, $scope.data.hoursPerDay);
             }
             $scope.daily = historyDao.getDailyHistory(history, $scope.data.viewDate);
@@ -62,6 +65,19 @@ angular.module('timeLogger')
                 values[i].delta = historyDao.getDeltaTime(values[i].start, values[i].stop);
             }
             return values;
+        };
+
+        $scope.deleteDailyValue = function(value) {
+            var key = historyDao.dateToInteger($scope.data.viewDate);
+
+            modalService.confirm('Do you want delete this item from daily history?').then(function() {
+                historyDao.persistHistory(function(history) {
+                    return historyDao.deleteDailyValue(history, key, value.id);
+                }).then(function(history) {
+                    loggerService.info('HistoryController: item was deleted from day.', history);
+                    refreshControllerData();
+                });
+            });
         };
 
         $scope.isReduced = function(reduce, value) {

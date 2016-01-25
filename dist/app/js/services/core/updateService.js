@@ -41,6 +41,23 @@ angular.module('timeLogger')
 
         var updateHistory = function() {
             var updates = [
+                function(history) {
+                    if (commonService.isDefined(history.overTime)) {
+                        delete history.overTime;
+                    }
+                    return history;
+                },
+
+                function(history) {
+                    var values = [];
+                    for (var key in history.daily) {
+                        if (history.daily.hasOwnProperty(key)) {
+                            values = history.daily[key].values;
+                            history.daily[key].calculated = values && historyDao.isPastDay(values[0].start);
+                        }
+                    }
+                    return history;
+                }
             ];
 
             return historyDao.persistHistory(function(data) {
