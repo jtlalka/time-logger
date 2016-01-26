@@ -12,21 +12,21 @@ angular.module('timeLogger')
             return $q.all([optionsPromise, historyPromise, statusPromise]);
         };
 
-        var updateManager = function(updates, data, name) {
+        var updateManager = function(updates, data, name, versionReset) {
             var updateSum = updates.length;
 
-            if (commonService.isNumber(data.version)) {
+            if (commonService.isDefined(versionReset)) {
+                data.version = versionReset;
+            }
+            if (commonService.isDefined(data.version)) {
                 for (var i = data.version; i < updateSum; i++) {
                     data = updates[i](data);
-
-                    if (commonService.isDefined(data)) {
-                        loggerService.trace('UpdateService: update ' + name + ' to version ' + (i + 1), data);
-                    } else {
-                        loggerService.error('UpdateService: update ' + name + ' - function not return value.');
-                    }
+                    data.version = i + 1;
+                    loggerService.trace('UpdateService: update ' + name + ' to version ' + data.version, data);
                 }
+            } else {
+                data.version = updateSum;
             }
-            data.version = updateSum;
             return data;
         };
 
@@ -61,7 +61,7 @@ angular.module('timeLogger')
             ];
 
             return historyDao.persistHistory(function(data) {
-                return updateManager(updates, data, 'history');
+                return updateManager(updates, data, 'history', 0);
             });
         };
 
