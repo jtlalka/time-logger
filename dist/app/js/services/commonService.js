@@ -142,6 +142,13 @@ angular.module('timeLogger')
             });
         };
 
+        var stringFormat = function(format, args) {
+            for (var i = 0, len = args.length; i < len; i++) {
+                format = format.replace(new RegExp('\\{' + i + '\\}', 'gi'), args[i]);
+            }
+            return format;
+        };
+
         return {
             getSyncStack: getSyncStack,
             isTrue: isTrue,
@@ -156,6 +163,7 @@ angular.module('timeLogger')
             copyProperty: copyProperty,
             toArray: toArray,
             arraySort: arraySort,
-            arrayReduce: arrayReduce
+            arrayReduce: arrayReduce,
+            stringFormat: stringFormat
         };
     });

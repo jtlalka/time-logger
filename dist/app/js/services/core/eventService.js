@@ -9,35 +9,15 @@ angular.module('timeLogger')
         var intervalFunc = null;
 
         this.initChromeEvents = function() {
-            onInstalledEvent();
-            onStartEvent();
-            onStopEvent();
+            onStartApplication();
             onStateChangedEvent();
         };
 
-        var onInstalledEvent = function() {
-            chrome.runtime.onInstalled.addListener(function() {
-                loggerService.trace('EventService: onInstalled event.');
-                updateService.checkUpdates().then(function() {
-                    dataService.checkStatus(dataService.type.ACTIVE);
-                    startCheckStatusLoop();
-                });
-            });
-        };
-
-        var onStartEvent = function() {
-            chrome.runtime.onStartup.addListener(function() {
-                loggerService.trace('EventService: onStartup event.');
+        var onStartApplication = function() {
+            loggerService.trace('EventService: onStart event.');
+            updateService.checkUpdates().then(function() {
                 dataService.checkStatus(dataService.type.ACTIVE);
-                startCheckStatusLoop();
-            });
-        };
-
-        var onStopEvent = function() {
-            chrome.runtime.onSuspend.addListener(function() {
-                loggerService.trace('EventService: onSuspend event.');
-                dataService.checkStatus(dataService.type.LOCKED);
-                stopCheckStatusLoop();
+                startStatusChecker();
             });
         };
 
@@ -48,11 +28,11 @@ angular.module('timeLogger')
             chrome.idle.onStateChanged.addListener(function(idleState) {
                 loggerService.trace('EventService: onStateChanged event.');
                 dataService.checkStatus(idleState);
-                resetCheckStatusLoop();
+                resetStatusChecker();
             });
         };
 
-        var startCheckStatusLoop = function() {
+        var startStatusChecker = function() {
             if (intervalFunc === null) {
                 intervalFunc = $interval(function() {
                     dataService.checkStatus();
@@ -60,15 +40,15 @@ angular.module('timeLogger')
             }
         };
 
-        var stopCheckStatusLoop = function() {
+        var stopStatusChecker = function() {
             if (intervalFunc !== null) {
                 $interval.cancel(intervalFunc);
                 intervalFunc = null;
             }
         };
 
-        var resetCheckStatusLoop = function() {
-            stopCheckStatusLoop();
-            startCheckStatusLoop();
+        var resetStatusChecker = function() {
+            stopStatusChecker();
+            startStatusChecker();
         };
     });
