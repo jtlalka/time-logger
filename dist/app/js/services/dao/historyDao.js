@@ -87,8 +87,8 @@ angular.module('timeLogger')
             }
         };
 
-        this.getDailyOverTime = function(daily, hoursPerDay) {
-            return self.getDailyWorkTime(daily.types) - commonService.toMillisecond(0, 0, hoursPerDay);
+        this.getDailyOverTime = function(daily, timePerDay) {
+            return self.getDailyWorkTime(daily.types) - timePerDay;
         };
 
         this.getDailyWorkTime = function(types) {
@@ -178,11 +178,11 @@ angular.module('timeLogger')
             return commonService.isFalse(day.active);
         };
 
-        this.updateHistoryStatus = function(history, status, hoursPerDay) {
-            return updateHistoryData(history, status.startTime, status.checkTime, status.type, hoursPerDay);
+        this.updateHistoryStatus = function(history, status, timePerDay) {
+            return updateHistoryData(history, status.startTime, status.checkTime, status.type, timePerDay);
         };
 
-        var updateHistoryData = function(history, start, stop, type, hoursPerDay) {
+        var updateHistoryData = function(history, start, stop, type, timePerDay) {
             var key = self.dateToInteger(start);
             var delta = self.getDeltaTime(start, stop);
 
@@ -192,7 +192,7 @@ angular.module('timeLogger')
 
             updateHistoryTypes(history, key, type, delta);
             updateHistoryDailyValue(history, key, start, stop, type);
-            updateHistoryOverTime(history, key, hoursPerDay);
+            updateHistoryOverTime(history, key, timePerDay);
 
             return history;
         };
@@ -216,10 +216,10 @@ angular.module('timeLogger')
             }
         };
 
-        var updateHistoryOverTime = function(history, key, hoursPerDay) {
-            if (commonService.isDefined(hoursPerDay)) {
+        var updateHistoryOverTime = function(history, key, timePerDay) {
+            if (commonService.isDefined(timePerDay)) {
                 var oldOverTime = history.daily[key].overTime;
-                var newOverTime = self.getDailyOverTime(history.daily[key], hoursPerDay);
+                var newOverTime = self.getDailyOverTime(history.daily[key], timePerDay);
 
                 if (dayIsActive(history.daily[key]) && oldOverTime !== newOverTime) {
                     history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, oldOverTime);

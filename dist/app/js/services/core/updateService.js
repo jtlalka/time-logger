@@ -34,6 +34,19 @@ angular.module('timeLogger')
 
         var updateOptions = function() {
             var updates = [
+                function(options) {
+                    if (commonService.isDefined(options.hoursPerDay)) {
+                        options.timePerWeek = 0;
+
+                        for (var i = 0, len = options.hoursPerDay.length; i < len; i++) {
+                            options.timePerDay[i] = commonService.toMillisecond(0, 0, options.hoursPerDay[i]);
+                            options.timePerWeek += options.timePerDay[i];
+                        }
+                    }
+                    delete options.hoursPerDay;
+                    delete options.hoursPerWeek;
+                    return options;
+                }
             ];
 
             return optionsDao.persistOptions(function(data) {

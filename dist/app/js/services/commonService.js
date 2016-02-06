@@ -82,10 +82,22 @@ angular.module('timeLogger')
             return result;
         };
 
-        var moveToTime = function(dateFormat, hours, minutes, seconds, milliseconds) {
-            var date = new Date(dateFormat);
+        var toUTCDate = function(dateFormat) {
+            var local = new Date(dateFormat);
+
+            return new Date(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(),
+                local.getUTCHours(), local.getUTCMinutes(), local.getUTCSeconds());
+        };
+
+        var dateToTime = function(timeFormat) {
+            var date = new Date(timeFormat);
+            return toMillisecond(date.getSeconds(), date.getMinutes(), date.getHours());
+        };
+
+        var moveToTime = function(timeFormat, hours, minutes, seconds, milliseconds) {
+            var date = new Date(timeFormat);
             date.setHours(hours, minutes, seconds, milliseconds);
-            return date;
+            return date.getTime();
         };
 
         var copyProperty = function(objectFrom, objectTo) {
@@ -159,6 +171,8 @@ angular.module('timeLogger')
             isUndefined: isUndefined,
             toSeconds: toSeconds,
             toMillisecond: toMillisecond,
+            toUTCDate: toUTCDate,
+            dateToTime: dateToTime,
             moveToTime: moveToTime,
             copyProperty: copyProperty,
             toArray: toArray,

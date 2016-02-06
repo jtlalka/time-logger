@@ -2,17 +2,25 @@
  * Options Data Access Object
  */
 angular.module('timeLogger')
-    .service('optionsDao', function(storageService) {
+    .service('optionsDao', function(storageService, commonService) {
 
         var syncManager = storageService.getSyncManager('options');
 
         var dataModel = {
             getDefaultOptions: function() {
                 return {
-                    hoursPerWeek: 40,
-                    hoursPerDay: [0, 8, 8, 8, 8, 8, 0],
-                    lockedTime: 0,
-                    notifications: false
+                    notifications: false,
+                    timePerDay: [
+                        commonService.toMillisecond(0),
+                        commonService.toMillisecond(0, 0, 8),
+                        commonService.toMillisecond(0, 0, 8),
+                        commonService.toMillisecond(0, 0, 8),
+                        commonService.toMillisecond(0, 0, 8),
+                        commonService.toMillisecond(0, 0, 8),
+                        commonService.toMillisecond(0)
+                    ],
+                    timePerWeek: commonService.toMillisecond(0, 0, 40),
+                    lockedTime: 0
                 };
             }
         };
@@ -29,7 +37,7 @@ angular.module('timeLogger')
             return syncManager.persist(dataModel.getDefaultOptions(), dataCallback);
         };
 
-        this.getHoursPerDay = function(options, dateFormat) {
-            return options.hoursPerDay[new Date(dateFormat).getDay()];
+        this.getTimePerDay = function(options, dateFormat) {
+            return options.timePerDay[new Date(dateFormat).getDay()];
         };
     });

@@ -24,13 +24,17 @@
     vertical-align: middle;
     white-space: nowrap;
     margin: 2px 4px;
+    padding: 2px;
 }
 
-#options label > input.hours-per-week {
-    background-color: transparent;
-    border: 0 none;
+#options label > span.time-per-week {
+    padding: 4px 10px;
     font-weight: bold;
-    color: inherit;
+    word-spacing: 0.01em;
+}
+
+#options label > input.ng-invalid {
+    border: 1px solid #aa0000;
 }
 
 #options label > span > select {

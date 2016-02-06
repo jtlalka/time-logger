@@ -3,12 +3,13 @@
  */
 angular.module('timeLogger')
     .controller('optionsController', function($scope, $routeParams, $timeout, modalService, loggerService,
-                                              commonService, optionsDao) {
+            commonService, optionsDao) {
 
         $scope.data = {
-            minHoursPerWeek: 0,
-            maxHoursPerWeek: 80,
-            hoursPerDayValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            timePerDay: [],
+            minTimePerDay: new Date(commonService.toMillisecond(0)),
+            maxTimePerDay: new Date(commonService.toMillisecond(0, 0, 12)),
+
             lockedTimeValues: [
                 commonService.toMillisecond(0),
                 commonService.toMillisecond(0, 30),
@@ -20,24 +21,35 @@ angular.module('timeLogger')
         };
 
         $scope.display = {
-            update: false,
-            header: false
+            header: false,
+            update: false
         };
 
         $scope.refresh = function() {
             $scope.display.header = $routeParams.router;
 
             optionsDao.getOptions().then(function(data) {
-                $scope.options = data;
+                refreshControllerData(data);
             });
         };
 
-        $scope.checkWorkingTime = function() {
-            $scope.options.hoursPerWeek = 0;
+        var refreshControllerData = function(data) {
+            $scope.options = data;
 
-            for (var key in $scope.options.hoursPerDay) {
-                if ($scope.options.hoursPerDay.hasOwnProperty(key)) {
-                    $scope.options.hoursPerWeek += $scope.options.hoursPerDay[key];
+            for (var i = 0, len = $scope.options.timePerDay.length; i < len; i++) {
+                $scope.data.timePerDay[i] = commonService.toUTCDate($scope.options.timePerDay[i]);
+            }
+        };
+
+        $scope.checkWorkingTime = function() {
+            $scope.options.timePerWeek = 0;
+
+            for (var i = 0, len = $scope.options.timePerDay.length; i < len; i++) {
+                if ($scope.data.timePerDay[i]) {
+                    $scope.options.timePerDay[i] = commonService.dateToTime($scope.data.timePerDay[i]);
+                    $scope.options.timePerWeek += $scope.options.timePerDay[i];
+                } else {
+                    $scope.options.timePerDay[i] = 0;
                 }
             }
         };
@@ -49,11 +61,18 @@ angular.module('timeLogger')
                 loggerService.info('OptionsController: update options.', options);
 
                 $timeout(function() {
-                    $scope.options = options;
+                    refreshControllerData(options);
                     $scope.display.update = false;
                     $scope.optionsForm.$setPristine();
                 }, 200);
             });
+        };
+
+        $scope.formatTimePerWeek = function(time) {
+            var hourInMillisecond = commonService.toMillisecond(0, 0, 1);
+            var hours = Math.floor(time / hourInMillisecond);
+            var minutes = Math.floor(time % hourInMillisecond / 60 / 1000);
+            return hours + (minutes < 10 ? ' : 0' + minutes : ' : ' + minutes);
         };
 
         $scope.showNotificationHelp = function() {

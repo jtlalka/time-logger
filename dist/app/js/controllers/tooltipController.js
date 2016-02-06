@@ -7,7 +7,6 @@ angular.module('timeLogger')
 
         $scope.data = {
             viewDate: null,
-            hoursPerDay: 5,
             timePerDay: 0
         };
 
@@ -47,13 +46,12 @@ angular.module('timeLogger')
         };
 
         var refreshOptionsDara = function(options) {
-            $scope.data.hoursPerDay = optionsDao.getHoursPerDay(options, $scope.data.viewDate);
-            $scope.data.timePerDay = commonService.toMillisecond(0, 0, $scope.data.hoursPerDay);
+            $scope.data.timePerDay = optionsDao.getTimePerDay(options, $scope.data.viewDate);
         };
 
         var refreshHistoryData = function(history, status) {
             if (historyDao.isPresentDay($scope.data.viewDate)) {
-                history = historyDao.updateHistoryStatus(history, status, $scope.data.hoursPerDay);
+                history = historyDao.updateHistoryStatus(history, status, $scope.data.timePerDay);
             }
             $scope.daily = historyDao.getDailyHistory(history, $scope.data.viewDate);
             $scope.daily.values = extendDailyValues($scope.daily.values);

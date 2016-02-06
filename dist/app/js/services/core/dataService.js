@@ -104,20 +104,20 @@ angular.module('timeLogger')
         };
 
         var moveToStart = function(checkTime, precision) {
-            var date = commonService.moveToTime(checkTime, 0, 0, 0, 0);
+            var newTime = commonService.moveToTime(checkTime, 0, 0, 0, 0);
 
-            if (isInPrecisionFrame(checkTime, date.getTime(), precision)) {
-                return date.getTime();
+            if (isInPrecisionFrame(checkTime, newTime, precision)) {
+                return newTime;
             } else {
                 return checkTime;
             }
         };
 
         var moveToEnd = function(checkTime, precision) {
-            var date = commonService.moveToTime(checkTime, 23, 59, 59, 0);
+            var newTime = commonService.moveToTime(checkTime, 23, 59, 59, 0);
 
-            if (isInPrecisionFrame(checkTime, date.getTime(), precision)) {
-                return date.getTime();
+            if (isInPrecisionFrame(checkTime, newTime, precision)) {
+                return newTime;
             } else {
                 return checkTime;
             }
@@ -167,7 +167,7 @@ angular.module('timeLogger')
         var updateDailyHistory = function(args, callback) {
             optionsDao.getOptions().then(function(data) {
                 args.dailyUpdate = true;
-                args.hoursPerDay = optionsDao.getHoursPerDay(data, args.status.startTime);
+                args.timePerDay = optionsDao.getTimePerDay(data, args.status.startTime);
 
                 commonService.copyProperty(data, options);
                 updateTimelyHistory(args, callback);
@@ -176,7 +176,7 @@ angular.module('timeLogger')
 
         var updateTimelyHistory = function(args, callback) {
             historyDao.persistHistory(function(history) {
-                return historyDao.updateHistoryStatus(history, args.status, args.hoursPerDay);
+                return historyDao.updateHistoryStatus(history, args.status, args.timePerDay);
             }).then(function(history) {
                 loggerService.info('DataService: update history.', history);
                 callback();
