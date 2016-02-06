@@ -63,7 +63,7 @@ angular.module('timeLogger')
             ];
 
             return historyDao.persistHistory(function(data) {
-                return updateManager(updates, data, 'history', 0);
+                return updateManager(updates, data, 'history');
             });
         };
 
