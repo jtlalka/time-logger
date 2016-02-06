@@ -24,7 +24,7 @@ angular.module('timeLogger')
                 for (var i = data.version; i < updateSum; i++) {
                     data = updates[i](data);
                     data.version = i + 1;
-                    loggerService.trace(commonService.stringFormat(message, [name, data.version]), data);
+                    loggerService.trace(commonService.stringFormat(message, name, data.version), data);
                 }
             } else {
                 data.version = updateSum;

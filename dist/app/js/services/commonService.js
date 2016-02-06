@@ -142,9 +142,9 @@ angular.module('timeLogger')
             });
         };
 
-        var stringFormat = function(format, args) {
-            for (var i = 0, len = args.length; i < len; i++) {
-                format = format.replace(new RegExp('\\{' + i + '\\}', 'gi'), args[i]);
+        var stringFormat = function(format) {
+            for (var i = 1, len = arguments.length; i < len; i++) {
+                format = format.replace(new RegExp('\\{' + (i - 1) + '\\}', 'gi'), arguments[i]);
             }
             return format;
         };
