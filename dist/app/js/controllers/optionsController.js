@@ -20,17 +20,17 @@ angular.module('timeLogger')
         $scope.refresh = function() {
             $scope.display.header = $routeParams.router;
 
-            optionsDao.getOptions().then(function(data) {
-                refreshControllerData(data);
+            optionsDao.getOptions().then(function(options) {
+                $scope.options = initOptionsObject(options);
+                loggerService.trace('OptionsController: init data.', options);
             });
         };
 
-        var refreshControllerData = function(data) {
-            $scope.options = data;
-
-            for (var i = 0, len = $scope.options.timePerDay.length; i < len; i++) {
-                $scope.data.timePerDay[i] = commonService.toUTCDate($scope.options.timePerDay[i]);
+        var initOptionsObject = function(options) {
+            for (var i = 0, len = options.timePerDay.length; i < len; i++) {
+                $scope.data.timePerDay[i] = commonService.toUTCDate(options.timePerDay[i]);
             }
+            return options;
         };
 
         $scope.checkWorkingTime = function() {
@@ -53,7 +53,7 @@ angular.module('timeLogger')
                 loggerService.info('OptionsController: update options.', options);
 
                 $timeout(function() {
-                    refreshControllerData(options);
+                    $scope.options = initOptionsObject(options);
                     $scope.display.update = false;
                     $scope.optionsForm.$setPristine();
                 }, 200);

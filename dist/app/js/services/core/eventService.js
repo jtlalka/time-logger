@@ -14,7 +14,7 @@ angular.module('timeLogger')
         };
 
         var onStartApplication = function() {
-            loggerService.trace('EventService: onStart event.');
+            loggerService.info('EventService: onStart event.');
             updateService.checkUpdates().then(function() {
                 dataService.checkStatus(dataService.type.ACTIVE);
                 startStatusChecker();

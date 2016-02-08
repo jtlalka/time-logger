@@ -19,8 +19,9 @@ angular.module('timeLogger')
         };
 
         $scope.refresh = function() {
-            historyDao.getHistory().then(function(data) {
-                $scope.history = initHistoryObject(data);
+            historyDao.getHistory().then(function(history) {
+                $scope.history = initHistoryObject(history);
+                loggerService.trace('HistoryController: init data.', history);
             });
         };
 

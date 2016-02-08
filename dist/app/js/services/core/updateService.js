@@ -9,7 +9,7 @@ angular.module('timeLogger')
             var historyPromise = updateHistory();
             var statusPromise = updateStatus();
 
-            loggerService.trace('UpdateService: check for updates.');
+            loggerService.info('UpdateService: check for updates.');
             return $q.all([optionsPromise, historyPromise, statusPromise]);
         };
 
@@ -24,7 +24,7 @@ angular.module('timeLogger')
                 for (var i = data.version; i < updateSum; i++) {
                     data = updates[i](data);
                     data.version = i + 1;
-                    loggerService.trace(commonService.stringFormat(message, name, data.version), data);
+                    loggerService.info(commonService.stringFormat(message, name, data.version), data);
                 }
             } else {
                 data.version = updateSum;

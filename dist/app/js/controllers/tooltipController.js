@@ -41,7 +41,7 @@ angular.module('timeLogger')
             $q.all([optionsPromise, historyPromise, statusPromise]).then(function(data) {
                 refreshOptionsDara(data[0]);
                 refreshHistoryData(data[1], data[0], data[2]);
-                loggerService.trace('TooltipController init data:', data);
+                loggerService.trace('TooltipController init data.', data);
             });
         };
 
