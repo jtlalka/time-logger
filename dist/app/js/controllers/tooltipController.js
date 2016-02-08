@@ -40,7 +40,7 @@ angular.module('timeLogger')
 
             $q.all([optionsPromise, historyPromise, statusPromise]).then(function(data) {
                 refreshOptionsDara(data[0]);
-                refreshHistoryData(data[1], data[2]);
+                refreshHistoryData(data[1], data[0], data[2]);
                 loggerService.trace('TooltipController init data:', data);
             });
         };
@@ -49,9 +49,10 @@ angular.module('timeLogger')
             $scope.data.timePerDay = optionsDao.getTimePerDay(options, $scope.data.viewDate);
         };
 
-        var refreshHistoryData = function(history, status) {
+        var refreshHistoryData = function(history, options, status) {
             if (historyDao.isPresentDay($scope.data.viewDate)) {
-                history = historyDao.updateHistoryStatus(history, status, $scope.data.timePerDay);
+                var activity = optionsDao.getActivityByType(options, status.type);
+                history = historyDao.updateHistoryStatus(history, status, activity, $scope.data.timePerDay);
             }
             $scope.daily = historyDao.getDailyHistory(history, $scope.data.viewDate);
             $scope.daily.values = extendDailyValues($scope.daily.values);

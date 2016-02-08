@@ -3,28 +3,38 @@
 
     <form name="optionsForm" data-ng-submit="updateOptions()">
         <fieldset>
-            <legend>General</legend>
+            <legend>
+                <span>Activity types</span>
+                <span class="text-link" data-ng-click="showActivityHelp()">[?]</span>
+            </legend>
             <label>
-                <input type="checkbox" name="notifications"
-                       data-ng-model="options.notifications"
-                       data-ng-disabled="true" />
-                <span>
-                    <span>Show notification after finished daily work.</span>
-                    <span class="text-link" data-ng-click="showNotificationHelp()">[?]</span>
-                </span>
+                <input type="checkbox" name="activeStatus" data-ng-model="options.activity.active.status"/>
+                <span>Active, maximum time for single event:</span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.activity.active.maxTime"
+                        data-ng-disabled="!options.activity.active.status"></select>
             </label>
             <label>
-                <span>&nbsp;</span>
-                <span>
-                    Maximum offline time in the office:
-                    <select data-ng-options="value as (value | date:'HH:mm':'UTC') for value in ::data.lockedTimeValues"
-                            data-ng-model="options.lockedTime"></select>
-                </span>
+                <input type="checkbox" name="idleStatus" data-ng-model="options.activity.idle.status"/>
+                <span>Idle, maximum time for single event:</span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.activity.idle.maxTime"
+                        data-ng-disabled="!options.activity.idle.status"></select>
+            </label>
+            <label>
+                <input type="checkbox" name="lockedStatus" data-ng-model="options.activity.locked.status"/>
+                <span>Locked, maximum time for single event:</span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.activity.locked.maxTime"
+                        data-ng-disabled="!options.activity.locked.status"></select>
             </label>
         </fieldset>
 
         <fieldset>
-            <legend>Working Time</legend>
+            <legend>
+                <span>Daily Working Time</span>
+                <span class="text-link" data-ng-click="showWorkingHelp()">[?]</span>
+            </legend>
             <label>
                 <span>Monday:</span>
                 <input type="time" name="timePerMo"

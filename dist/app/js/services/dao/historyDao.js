@@ -178,23 +178,43 @@ angular.module('timeLogger')
             return commonService.isFalse(day.active);
         };
 
-        this.updateHistoryStatus = function(history, status, timePerDay) {
-            return updateHistoryData(history, status.startTime, status.checkTime, status.type, timePerDay);
+        this.updateHistoryStatus = function(history, status, activity, timePerDay) {
+            return updateHistoryData(history, status.startTime, status.checkTime, status.type, activity, timePerDay);
         };
 
-        var updateHistoryData = function(history, start, stop, type, timePerDay) {
+        var updateHistoryData = function(history, start, stop, type, activity, timePerDay) {
             var key = self.dateToInteger(start);
             var delta = self.getDeltaTime(start, stop);
 
             if (commonService.isUndefined(history.daily[key])) {
                 history.daily[key] = dataModel.getHistoryDailyEntry();
             }
-
-            updateHistoryTypes(history, key, type, delta);
-            updateHistoryDailyValue(history, key, start, stop, type);
-            updateHistoryOverTime(history, key, timePerDay);
-
+            if (commonService.isTrue(activity.status) && delta < activity.maxTime) {
+                updateHistoryValue(history, key, start, stop, type, activity.maxTime);
+                updateHistoryTypes(history, key, type, delta);
+            }
+            if (commonService.isDefined(timePerDay)) {
+                updateHistoryDaily(history, key, timePerDay);
+            }
             return history;
+        };
+
+        var updateHistoryValue = function(history, key, start, stop, type, maxTime) {
+            var saveValue = dataModel.getHistoryDailyValue(start, stop, type);
+            var lastValue = history.daily[key].values.slice(-1).pop();
+
+            if (isMergeValuesAvailable(lastValue, saveValue, maxTime)) {
+                lastValue.stop = saveValue.stop;
+            } else {
+                history.daily[key].values.push(saveValue);
+            }
+        };
+
+        var isMergeValuesAvailable = function(lastValue, saveValue, maxTime) {
+            return lastValue &&
+                lastValue.type === saveValue.type &&
+                lastValue.stop === saveValue.start &&
+                saveValue.stop - lastValue.start < maxTime;
         };
 
         var updateHistoryTypes = function(history, key, type, delta) {
@@ -205,29 +225,16 @@ angular.module('timeLogger')
             }
         };
 
-        var updateHistoryDailyValue = function(history, key, start, stop, type) {
-            var newStatus = dataModel.getHistoryDailyValue(start, stop, type);
-            var lastStatus = history.daily[key].values.slice(-1).pop();
+        var updateHistoryDaily = function(history, key, timePerDay) {
+            var oldOverTime = history.daily[key].overTime;
+            var newOverTime = self.getDailyOverTime(history.daily[key], timePerDay);
 
-            if (lastStatus && lastStatus.type === newStatus.type && lastStatus.stop === newStatus.start) {
-                lastStatus.stop = newStatus.stop;
-            } else {
-                history.daily[key].values.push(newStatus);
+            if (dayIsActive(history.daily[key]) && oldOverTime !== newOverTime) {
+                history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, oldOverTime);
+                history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, newOverTime);
             }
-        };
-
-        var updateHistoryOverTime = function(history, key, timePerDay) {
-            if (commonService.isDefined(timePerDay)) {
-                var oldOverTime = history.daily[key].overTime;
-                var newOverTime = self.getDailyOverTime(history.daily[key], timePerDay);
-
-                if (dayIsActive(history.daily[key]) && oldOverTime !== newOverTime) {
-                    history.timeFrame = decreaseTimeFrameOverTime(history.timeFrame, key, oldOverTime);
-                    history.timeFrame = increaseTimeFrameOverTime(history.timeFrame, key, newOverTime);
-                }
-                history.daily[key].overTime = newOverTime;
-                history.daily[key].calculated = true;
-            }
+            history.daily[key].overTime = newOverTime;
+            history.daily[key].calculated = true;
         };
 
         var increaseTimeFrameOverTime = function(timeFrame, key, overTime) {

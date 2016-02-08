@@ -9,15 +9,7 @@ angular.module('timeLogger')
             timePerDay: [],
             minTimePerDay: new Date(commonService.toMillisecond(0)),
             maxTimePerDay: new Date(commonService.toMillisecond(0, 0, 12)),
-
-            lockedTimeValues: [
-                commonService.toMillisecond(0),
-                commonService.toMillisecond(0, 30),
-                commonService.toMillisecond(0, 60),
-                commonService.toMillisecond(0, 90),
-                commonService.toMillisecond(0, 120),
-                commonService.toMillisecond(0, 150)
-            ]
+            timeOptions: optionsDao.getTimeOptions()
         };
 
         $scope.display = {
@@ -75,7 +67,11 @@ angular.module('timeLogger')
             return hours + (minutes < 10 ? ' : 0' + minutes : ' : ' + minutes);
         };
 
-        $scope.showNotificationHelp = function() {
-            modalService.inform('This function will be implemented in future.');
+        $scope.showActivityHelp = function() {
+            modalService.inform('...');
+        };
+
+        $scope.showWorkingHelp = function() {
+            modalService.inform('...');
         };
     });

@@ -59,9 +59,7 @@ angular.module('timeLogger')
 
                 } else if (isNextTime(data.checkTime, currentTime, precisionTime)) {
                     updateHistory(data.startTime, data.checkTime, data.type, false);
-                    if (isLoggedTime(data.checkTime, currentTime, options.lockedTime)) {
-                        updateHistory(data.checkTime, currentTime, self.type.LOCKED, false);
-                    }
+                    updateHistory(data.checkTime, currentTime, self.type.LOCKED, false);
                     createStatus(status, currentTime, currentType);
 
                 } else if (isTypeChange(data.type, args.type)) {
@@ -93,10 +91,6 @@ angular.module('timeLogger')
 
         var isNextTime = function(checkTime, currentTime, deltaTime) {
             return Math.abs(currentTime - checkTime) > deltaTime;
-        };
-
-        var isLoggedTime = function(checkTime, currentTime, maxLoggedTime) {
-            return Math.abs(currentTime - checkTime) < maxLoggedTime;
         };
 
         var isTypeChange = function(oldType, newType) {
@@ -166,7 +160,6 @@ angular.module('timeLogger')
 
         var updateDailyHistory = function(args, callback) {
             optionsDao.getOptions().then(function(data) {
-                args.dailyUpdate = true;
                 args.timePerDay = optionsDao.getTimePerDay(data, args.status.startTime);
 
                 commonService.copyProperty(data, options);
@@ -176,7 +169,8 @@ angular.module('timeLogger')
 
         var updateTimelyHistory = function(args, callback) {
             historyDao.persistHistory(function(history) {
-                return historyDao.updateHistoryStatus(history, args.status, args.timePerDay);
+                var activity = optionsDao.getActivityByType(options, args.status.type);
+                return historyDao.updateHistoryStatus(history, args.status, activity, args.timePerDay);
             }).then(function(history) {
                 loggerService.info('DataService: update history.', history);
                 callback();

@@ -46,6 +46,13 @@ angular.module('timeLogger')
                     delete options.hoursPerDay;
                     delete options.hoursPerWeek;
                     return options;
+                },
+                function(options) {
+                    if (commonService.isDefined(options.lockedTime)) {
+                        options.activity = optionsDao.getDefaultOptions().activity;
+                    }
+                    delete options.lockedTime;
+                    return options;
                 }
             ];
 
