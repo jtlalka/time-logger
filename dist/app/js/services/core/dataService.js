@@ -5,8 +5,6 @@ angular.module('timeLogger')
     .service('dataService', function(propertyService, loggerService, commonService, optionsDao, historyDao, statusDao) {
 
         var self = this;
-        var options = null;
-
         var statusStack = commonService.getSyncStack();
         var historyStack = commonService.getSyncStack();
         var precisionTime = propertyService.getPrecisionTime();
@@ -18,25 +16,9 @@ angular.module('timeLogger')
         };
 
         this.checkStatus = function(type) {
-            if (options === null) {
-                statusStack.push(firstChecksAction, getCheckStatusArgs(type));
-            } else {
-                statusStack.push(checkStatusAction, getCheckStatusArgs(type));
-            }
-        };
-
-        var getCheckStatusArgs = function(type) {
-            return {
+            statusStack.push(checkStatusAction, {
                 currentTime: Date.now(),
                 type: type
-            };
-        };
-
-        var firstChecksAction = function(args, callback) {
-            options = {};
-            optionsDao.getOptions().then(function(data) {
-                commonService.copyProperty(data, options);
-                checkStatusAction(args, callback);
             });
         };
 
@@ -151,29 +133,21 @@ angular.module('timeLogger')
         };
 
         var updateHistoryAction = function(args, callback) {
-            if (commonService.isTrue(args.nextDay)) {
-                updateDailyHistory(args, callback);
-            } else {
-                updateTimelyHistory(args, callback);
-            }
-        };
+            optionsDao.getOptions().then(function(options) {
+                var activity = optionsDao.getActivityByType(options, args.status.type);
+                var timePerDay = optionsDao.getTimePerDay(options, args.status.startTime);
 
-        var updateDailyHistory = function(args, callback) {
-            optionsDao.getOptions().then(function(data) {
-                args.timePerDay = optionsDao.getTimePerDay(data, args.status.startTime);
-
-                commonService.copyProperty(data, options);
-                updateTimelyHistory(args, callback);
+                if (commonService.isTrue(args.nextDay)) {
+                    updateHistoryStatus(args.status, activity, timePerDay).then(callback);
+                } else {
+                    updateHistoryStatus(args.status, activity).then(callback);
+                }
             });
         };
 
-        var updateTimelyHistory = function(args, callback) {
-            historyDao.persistHistory(function(history) {
-                var activity = optionsDao.getActivityByType(options, args.status.type);
-                return historyDao.updateHistoryStatus(history, args.status, activity, args.timePerDay);
-            }).then(function(history) {
-                loggerService.info('DataService: update history.', history);
-                callback();
+        var updateHistoryStatus = function(status, activity, timePerDay) {
+            return historyDao.persistHistory(function(history) {
+                return historyDao.updateHistoryStatus(history, status, activity, timePerDay);
             });
         };
     });
