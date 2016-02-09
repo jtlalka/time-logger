@@ -161,6 +161,13 @@ angular.module('timeLogger')
             return format;
         };
 
+        var getNumbersArray = function(nim, max, step) {
+            for (var numbers = [], i = nim; i <= max; i += step) {
+                numbers.push(i);
+            }
+            return numbers;
+        };
+
         return {
             getSyncStack: getSyncStack,
             isTrue: isTrue,
@@ -178,6 +185,7 @@ angular.module('timeLogger')
             toArray: toArray,
             arraySort: arraySort,
             arrayReduce: arrayReduce,
-            stringFormat: stringFormat
+            stringFormat: stringFormat,
+            getNumbersArray: getNumbersArray
         };
     });

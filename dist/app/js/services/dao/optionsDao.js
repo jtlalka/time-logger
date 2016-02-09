@@ -71,15 +71,16 @@ angular.module('timeLogger')
         };
 
         this.getTimeOptions = function() {
-            var times = [];
             var minTime = commonService.toMillisecond(0);
             var maxTime = commonService.toMillisecond(0, 0, 12);
             var stepTime = commonService.toMillisecond(0, 15);
+            return commonService.getNumbersArray(minTime, maxTime, stepTime);
+        };
 
-            for (var i = minTime; i <= maxTime; i += stepTime) {
-                times.push(i);
-            }
-            return times;
+        this.getTimeScale = function() {
+            var minTime = commonService.toMillisecond(0, 0, 1);
+            var maxTime = commonService.toMillisecond(0, 0, 12);
+            return commonService.getNumbersArray(minTime, maxTime, minTime);
         };
 
         this.getDefaultOptions = function() {

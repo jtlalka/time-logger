@@ -5,35 +5,36 @@
         <div class="progress-bar" data-toggle-directive="display.history">
             <span data-ng-repeat="value in daily.values | reduceBy:reduce | sortBy:order track by $index"
                   data-ng-class="value.type"
-                  data-ng-show="data.timePerDay > 0"
-                  data-width-directive="value.delta data.timePerDay"></span>
+                  data-width-directive="value.delta data.totalTime"></span>
+        </div>
 
-            <span class="locked"
-                  data-ng-show="data.timePerDay === 0"
-                  data-width-directive="100 100"></span>
+        <div class="progress-scale">
+            <span data-ng-repeat="time in data.scaleTimes track by $index"
+                  data-width-directive="data.stepTime data.totalTime"
+                  data-ng-class="{invalid: time > data.workTime}">{{time | date: 'HH':'UTC'}}</span>
         </div>
-    </div>
 
-    <div class="progress-legend" data-ng-click="toggleDailyHistory()">
-        <div data-ng-class="reduce | func: isReduced:'active'">
-            <span class="legend active"></span>
-            <span class="text-click" data-reduce-directive="reduce 'type' 'active'">Active:</span>
-            <span>{{(daily.types.active || 0) | timeFormat}}</span>
-        </div>
-        <div data-ng-class="reduce | func: isReduced:'idle'">
-            <span class="legend idle"></span>
-            <span class="text-click" data-reduce-directive="reduce 'type' 'idle'">Idle:</span>
-            <span>{{(daily.types.idle || 0) | timeFormat}}</span>
-        </div>
-        <div data-ng-class="reduce | func: isReduced:'locked'">
-            <span class="legend locked"></span>
-            <span class="text-click" data-reduce-directive="reduce 'type' 'locked'">Offline:</span>
-            <span>{{(daily.types.locked || 0) | timeFormat}}</span>
-        </div>
-        <div data-ng-class="reduce | func: isReduced">
-            <span class="legend total"></span>
-            <span class="text-click" data-reduce-directive="reduce">Total:</span>
-            <span>{{(daily.types || {}) | countWorkTime | timeFormat}}</span>
+        <div class="progress-legend">
+            <div data-ng-class="reduce | func: isReduced:'active'">
+                <span class="legend active"></span>
+                <span class="text-click" data-reduce-directive="reduce 'type' 'active'">Active:</span>
+                <span>{{(daily.types.active || 0) | timeFormat}}</span>
+            </div>
+            <div data-ng-class="reduce | func: isReduced:'idle'">
+                <span class="legend idle"></span>
+                <span class="text-click" data-reduce-directive="reduce 'type' 'idle'">Idle:</span>
+                <span>{{(daily.types.idle || 0) | timeFormat}}</span>
+            </div>
+            <div data-ng-class="reduce | func: isReduced:'locked'">
+                <span class="legend locked"></span>
+                <span class="text-click" data-reduce-directive="reduce 'type' 'locked'">Locked:</span>
+                <span>{{(daily.types.locked || 0) | timeFormat}}</span>
+            </div>
+            <div data-ng-class="reduce | func: isReduced">
+                <span class="legend total"></span>
+                <span class="text-click" data-reduce-directive="reduce">Total:</span>
+                <span>{{(daily.types || {}) | countWorkTime | timeFormat}}</span>
+            </div>
         </div>
     </div>
 
@@ -54,7 +55,9 @@
                     <td>{{value.type}}</td>
                     <td>{{value.delta | timeFormat}}</td>
                     <td class="table-cell-1p text-center">
-                        <span class="text-link" data-ng-click="deleteDailyValue(value)">
+                        <span class="text-link"
+                              data-ng-click="deleteDailyValue(value)"
+                              data-ng-hide="data.isPresentDay && $last">
                             [<i class="icon icon-remove"></i>]
                         </span>
                     </td>

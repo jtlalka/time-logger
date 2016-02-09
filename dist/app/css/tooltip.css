@@ -6,27 +6,41 @@
 }
 
 #tooltip div.progress > div.progress-bar {
-    border: 1px solid #111111;
     cursor: pointer;
     height: 20px;
 }
 
-#tooltip div.progress-legend {
-    margin: 10px;
+#tooltip div.progress > div.progress-scale {
+    overflow: hidden;
+    clear: both;
 }
 
-#tooltip div.progress-legend > div {
-    display: inline-block;
+#tooltip div.progress > div.progress-scale > span {
+    display: block;
+    float: left;
+    text-align: right;
+    font-size: smaller;
+}
+
+#tooltip div.progress > div.progress-legend {
+    margin-top: 12px;
     overflow: hidden;
-    text-align: left;
+    clear: both;
+}
+
+#tooltip div.progress > div.progress-legend > div {
+    display: block;
+    float: left;
+    overflow: hidden;
+    text-align: center;
     width: 25%;
 }
 
-#tooltip div.progress-legend > div.reduced {
+#tooltip div.progress > div.progress-legend div.reduced {
     color: #999999;
 }
 
-#tooltip div.progress-legend > div > span.legend {
+#tooltip div.progress > div.progress-legend span.legend {
     border: 1px solid #111111;
     display: inline-block;
     overflow: hidden;

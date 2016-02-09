@@ -7,7 +7,11 @@ angular.module('timeLogger')
 
         $scope.data = {
             viewDate: null,
-            timePerDay: 0
+            isPresentDay: true,
+            stepTime: commonService.toMillisecond(0, 0, 1),
+            totalTime: commonService.toMillisecond(0, 0, 12),
+            scaleTimes: optionsDao.getTimeScale(),
+            workTime: 0
         };
 
         $scope.display = {
@@ -27,8 +31,10 @@ angular.module('timeLogger')
         $scope.refresh = function() {
             if ($routeParams.date) {
                 $scope.data.viewDate = new Date(parseInt($routeParams.date, 10));
+                $scope.data.isPresentDay = false;
             } else {
                 $scope.data.viewDate = new Date();
+                $scope.data.isPresentDay = true;
             }
             refreshControllerData();
         };
@@ -39,23 +45,21 @@ angular.module('timeLogger')
             var statusPromise = statusDao.getStatus();
 
             $q.all([optionsPromise, historyPromise, statusPromise]).then(function(data) {
-                refreshOptionsDara(data[0]);
                 refreshHistoryData(data[1], data[0], data[2]);
                 loggerService.trace('TooltipController init data.', data);
             });
         };
 
-        var refreshOptionsDara = function(options) {
-            $scope.data.timePerDay = optionsDao.getTimePerDay(options, $scope.data.viewDate);
-        };
-
         var refreshHistoryData = function(history, options, status) {
-            if (historyDao.isPresentDay($scope.data.viewDate)) {
+            if ($scope.data.isPresentDay) {
                 var activity = optionsDao.getActivityByType(options, status.type);
-                history = historyDao.updateHistoryStatus(history, status, activity, $scope.data.timePerDay);
+                var timePerDay = optionsDao.getTimePerDay(options, $scope.data.viewDate);
+
+                history = historyDao.updateHistoryStatus(history, status, activity, timePerDay);
             }
             $scope.daily = historyDao.getDailyHistory(history, $scope.data.viewDate);
             $scope.daily.values = extendDailyValues($scope.daily.values);
+            $scope.data.workTime = calculateWorkTime($scope.daily);
         };
 
         var extendDailyValues = function(values) {
@@ -64,6 +68,10 @@ angular.module('timeLogger')
                 values[i].delta = historyDao.getDeltaTime(values[i].start, values[i].stop);
             }
             return values;
+        };
+
+        var calculateWorkTime = function(daily) {
+            return historyDao.getDailyWorkTime(daily.types) - daily.overTime;
         };
 
         $scope.deleteDailyValue = function(value) {
