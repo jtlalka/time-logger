@@ -167,6 +167,18 @@ input[type=checkbox] {
     vertical-align: middle;
 }
 
+ul,
+.list {
+    display: block;
+    list-style-type: disc;
+}
+
+ul > li,
+.list > .list-item {
+    display: list-item;
+    list-style-position: inside;
+}
+
 /****** text **********************************************************************************************************/
 .text {
     font-style: normal;
