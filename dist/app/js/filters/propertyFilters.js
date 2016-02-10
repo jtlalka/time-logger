@@ -56,8 +56,8 @@ angular.module('timeLogger')
             return flag && flag === 'negative' && time > 0;
         };
 
-        var getStringTime = function(time) {
-            return $filter('date')(time, 'HH:mm:ss', 'UTC');
+        var roundToFullSeconds = function(time) {
+            return Math.floor(time / 1000) * 1000;
         };
 
         var getStringDays = function(time) {
@@ -65,11 +65,15 @@ angular.module('timeLogger')
             return days > 1 ? days + ' days ' : days + ' day ';
         };
 
+        var getStringTime = function(time) {
+            return $filter('date')(time, 'HH:mm:ss', 'UTC');
+        };
+
         return function(input, flag) {
             if (positiveFilter(input, flag) || negativeFilter(input, flag)) {
                 time = 0;
             } else {
-                time = Math.abs(input);
+                time = Math.abs(roundToFullSeconds(input));
             }
             if (time > dayInMillisecond) {
                 return getStringDays(time) + getStringTime(time % dayInMillisecond);
