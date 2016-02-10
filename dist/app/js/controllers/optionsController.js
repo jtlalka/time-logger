@@ -68,10 +68,24 @@ angular.module('timeLogger')
         };
 
         $scope.showActivityHelp = function() {
-            modalService.inform('...');
+            modalService.inform([
+                'You can specify which of your daily activities will be calculated as working time:',
+                '<ul class="padding-x1">',
+                '<li><strong>active</strong> - time actively spent at a computer,</li>',
+                '<li><strong>idle</strong> - time spent at a computer without any actions,</li>',
+                '<li><strong>locked</strong> - time when computer is logged out.</li>',
+                '</ul>',
+                'Maximum time of single event is configurable for reducing activities which are not part',
+                ' of your working time. ',
+                'If single activity is over time limit, this event will not be added to daily activities.'
+            ].join(''));
         };
 
         $scope.showWorkingHelp = function() {
-            modalService.inform('...');
+            modalService.inform([
+                'You can specify how many hours you should work each days. ',
+                'Based on these numbers this extension will calculate balance of your daily ',
+                'working time and general overtime.'
+            ].join(''));
         };
     });

@@ -77,7 +77,7 @@ angular.module('timeLogger')
         $scope.deleteDailyValue = function(value) {
             var key = historyDao.dateToInteger($scope.data.viewDate);
 
-            modalService.confirm('Do you want delete this item from daily history?').then(function() {
+            modalService.confirm('Do you want delete this event from daily history?').then(function() {
                 historyDao.persistHistory(function(history) {
                     return historyDao.deleteDailyValue(history, key, value.id);
                 }).then(function(history) {
