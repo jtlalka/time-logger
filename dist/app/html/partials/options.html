@@ -37,87 +37,52 @@
             </legend>
             <label>
                 <span>Monday:</span>
-                <input type="time" name="timePerMo"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[1]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerMo.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[1]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Tuesday:</span>
-                <input type="time" name="timePerTu"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[2]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerTu.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[2]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Wednesday:</span>
-                <input type="time" name="timePerWe"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[3]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerWe.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[3]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Thursday:</span>
-                <input type="time" name="timePerTh"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[4]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerTh.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[4]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Friday:</span>
-                <input type="time" name="timePerFr"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[5]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerFr.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[5]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Saturday:</span>
-                <input type="time" name="timePerSa"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[6]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerSa.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[6]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Sunday:</span>
-                <input type="time" name="timePerSu"
-                       min="{{::data.minTimePerDay | timeFormat}}"
-                       max="{{::data.maxTimePerDay | timeFormat}}"
-                       data-ng-model="data.timePerDay[0]"
-                       data-ng-change="checkWorkingTime()"
-                       data-ng-required="true"/>
-                <span class="text-invalid" data-ng-show="optionsForm.timePerSu.$invalid">
-                    Invalid time, max. 12 hour.
-                </span>
+                <select data-ng-options="time as (time | date:'HH:mm':'UTC') for time in ::data.timeOptions"
+                        data-ng-model="options.timePerDay[0]"
+                        data-ng-change="checkWorkingTime()"
+                        data-ng-required="true"></select>
             </label>
             <label>
                 <span>Working time per week:</span>
