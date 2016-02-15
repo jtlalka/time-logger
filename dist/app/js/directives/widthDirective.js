@@ -11,7 +11,7 @@ angular.module('timeLogger')
             var data = getDirectiveData($scope, args);
 
             $scope.$watch(args[0], function(newValue) {
-                element.css(getElementStyle(newValue, data.total, element));
+                element.css(getElementStyle(newValue, data.total));
             });
         };
 
@@ -30,18 +30,13 @@ angular.module('timeLogger')
             return $parse(arg)(scope);
         };
 
-        var getElementStyle = function(value, total, element) {
-            var totalWidth = getParentWidth(element);
+        var getElementStyle = function(value, total) {
             var itemWidth = 0;
 
             if (value > 0 && total > 0) {
-                itemWidth = Math.round(value * totalWidth / total);
+                itemWidth = value * 100 / total;
             }
-            return {'width': itemWidth + 'px'};
-        };
-
-        var getParentWidth = function(element) {
-            return element[0].parentElement.clientWidth;
+            return {'width': itemWidth + '%'};
         };
 
         return {
