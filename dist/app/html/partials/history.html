@@ -26,7 +26,7 @@
             </label>
         </form>
         <div class="values">
-            <div data-ng-repeat="day in dailyArray = (history.daily | toArray | sortBy:order) track by $index"
+            <div data-ng-repeat="day in data.dailyArray | sortBy:order track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">
@@ -48,15 +48,14 @@
                     </div>
                 </div>
 
-                <div class="progress-bar"
-                        data-ng-if="day.active">
+                <div class="progress-bar" data-ng-if="day.active">
                     <span data-ng-repeat="(type, value) in day.types track by $index"
                           data-ng-class="type"
                           data-width-directive="value data.barSize"></span>
                 </div>
             </div>
             <div class="summary"
-                    data-ng-show="dailyArray.length === 0"
+                    data-ng-show="data.dailyArray.length === 0"
                     data-ng-switch="data.fromFlag || data.toFlag || timeForm.$dirty">
                 <span class="warn" data-ng-switch-when="true">No data in this range</span>
                 <span class="info" data-ng-switch-when="false">No data from previous days</span>
@@ -64,9 +63,9 @@
         </div>
     </div>
 
-    <div class="summary" data-ng-switch="history.timeFrame.overTime > 0">
-        <span class="warn" data-ng-switch-when="true">Total Over Time: {{history.timeFrame.overTime | timeFormat}}</span>
-        <span class="info" data-ng-switch-when="false">Total Missing Time: {{history.timeFrame.overTime | timeFormat}}</span>
+    <div class="summary" data-ng-switch="data.timeFrame.overTime > 0">
+        <span class="warn" data-ng-switch-when="true">Total Over Time: {{data.timeFrame.overTime | timeFormat}}</span>
+        <span class="info" data-ng-switch-when="false">Total Missing Time: {{data.timeFrame.overTime | timeFormat}}</span>
     </div>
 
 </div>

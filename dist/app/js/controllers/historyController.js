@@ -6,11 +6,18 @@ angular.module('timeLogger')
             historyDao) {
 
         $scope.data = {
+            dailyArray: [],
+            timeFrame: {},
             barSize: commonService.toMillisecond(0, 0, 12),
             fromFlag: false,
             fromDate: null,
             toFlag: false,
             toDate: null
+        };
+
+        $scope.display = {
+            limit: 100,
+            step: 20
         };
 
         $scope.order = {
@@ -20,7 +27,7 @@ angular.module('timeLogger')
 
         $scope.refresh = function() {
             historyDao.getHistory().then(function(history) {
-                $scope.history = initHistoryObject(history);
+                refreshControllerData(history);
                 loggerService.trace('HistoryController: init data.', history);
             });
         };
@@ -32,7 +39,7 @@ angular.module('timeLogger')
 
                 return historyDao.updateTimeFrameHistory(history, beginKey, endKey);
             }).then(function(history) {
-                $scope.history = initHistoryObject(history);
+                refreshControllerData(history);
                 $scope.timeForm.$setPristine();
                 loggerService.info('HistoryController: update time frame.', history);
             });
@@ -44,7 +51,7 @@ angular.module('timeLogger')
             historyDao.persistHistory(function(history) {
                 return historyDao.enableDayToHistory(history, day.key);
             }).then(function(history) {
-                $scope.history = initHistoryObject(history);
+                refreshControllerData(history);
                 loggerService.info('HistoryController: day was enable in history.', history);
             });
         };
@@ -55,7 +62,7 @@ angular.module('timeLogger')
             historyDao.persistHistory(function(history) {
                 return historyDao.disableDayFromHistory(history, day.key);
             }).then(function(history) {
-                $scope.history = initHistoryObject(history);
+                refreshControllerData(history);
                 loggerService.info('HistoryController: day was disabled from history.', history);
             });
         };
@@ -67,21 +74,23 @@ angular.module('timeLogger')
                 historyDao.persistHistory(function(history) {
                     return historyDao.deleteDayFromHistory(history, day.key);
                 }).then(function(history) {
-                    $scope.history = initHistoryObject(history);
+                    refreshControllerData(history);
                     loggerService.info('HistoryController: day was deleted from history.', history);
                 });
             });
         };
 
-        var initHistoryObject = function(history) {
+        var refreshControllerData = function(history) {
             history = historyDao.filterTimeFrameDays(history);
             history = historyDao.filterCalculatedDays(history);
 
-            initTimeFrameScope(history.timeFrame);
-            return extendHistoryObject(history);
+            refreshTimeFrame(history.timeFrame);
+            refreshDailyArray(history.daily);
         };
 
-        var initTimeFrameScope = function(timeFrame) {
+        var refreshTimeFrame = function(timeFrame) {
+            $scope.data.timeFrame = timeFrame;
+
             $scope.data.fromFlag = commonService.isDefined(timeFrame.beginDate);
             $scope.data.fromDate = keyToDate(timeFrame.beginDate);
 
@@ -89,15 +98,18 @@ angular.module('timeLogger')
             $scope.data.toDate = keyToDate(timeFrame.endDate);
         };
 
-        var extendHistoryObject = function(history) {
-            for (var key in history.daily) {
-                if (history.daily.hasOwnProperty(key)) {
-                    history.daily[key].key = key;
-                    history.daily[key].date = keyToDate(key);
-                    history.daily[key].values.length = 0;
+        var refreshDailyArray = function(days) {
+            $scope.data.dailyArray.length = 0;
+
+            for (var key in days) {
+                if (days.hasOwnProperty(key)) {
+                    days[key].key = key;
+                    days[key].date = keyToDate(key);
+                    days[key].values.length = 0;
+
+                    $scope.data.dailyArray.push(days[key]);
                 }
             }
-            return history;
         };
 
         var keyToDate = function(number) {
