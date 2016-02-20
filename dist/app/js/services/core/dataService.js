@@ -45,7 +45,7 @@ angular.module('timeLogger')
                     createStatus(status, currentTime, currentType);
 
                 } else if (isTypeChange(data.type, args.type)) {
-                    if (isInPrecisionFrame(data.startTime, currentTime, precisionTime)) {
+                    if (isShortEvent(data.startTime, currentTime, precisionTime)) {
                         updateStatus(status, data.startTime, currentTime, currentType);
                     } else {
                         updateHistory(data.startTime, currentTime, data.type, false);
@@ -82,7 +82,7 @@ angular.module('timeLogger')
         var moveToStart = function(checkTime, precision) {
             var newTime = commonService.moveToTime(checkTime, 0, 0, 0, 0);
 
-            if (isInPrecisionFrame(checkTime, newTime, precision)) {
+            if (isShortEvent(checkTime, newTime, precision)) {
                 return newTime;
             } else {
                 return checkTime;
@@ -92,14 +92,14 @@ angular.module('timeLogger')
         var moveToEnd = function(checkTime, precision) {
             var newTime = commonService.moveToTime(checkTime, 23, 59, 59, 0);
 
-            if (isInPrecisionFrame(checkTime, newTime, precision)) {
+            if (isShortEvent(checkTime, newTime, precision)) {
                 return newTime;
             } else {
                 return checkTime;
             }
         };
 
-        var isInPrecisionFrame = function(value1, value2, precision) {
+        var isShortEvent = function(value1, value2, precision) {
             return Math.abs(value1 - value2) < precision;
         };
 
