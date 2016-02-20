@@ -16,8 +16,7 @@ angular.module('timeLogger')
         };
 
         $scope.display = {
-            limit: 100,
-            step: 20
+            limit: 100
         };
 
         $scope.order = {

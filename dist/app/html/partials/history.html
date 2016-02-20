@@ -25,8 +25,8 @@
                         data-ng-disabled="timeForm.$invalid || timeForm.$pristine">Save</button>
             </label>
         </form>
-        <div class="values">
-            <div data-ng-repeat="day in data.dailyArray | sortBy:order track by $index"
+        <div class="values" data-scroll-directive="display.limit">
+            <div data-ng-repeat="day in data.dailyArray | sortBy:order | limitTo:display.limit track by $index"
                     data-ng-click="openTooltip(day.date)">
 
                 <div class="block-top">
