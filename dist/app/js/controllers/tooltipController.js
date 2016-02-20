@@ -94,4 +94,11 @@ angular.module('timeLogger')
                 return '';
             }
         };
+
+        $scope.historyTableHelp = function() {
+            modalService.inform([
+                'This table present details of daily activities, every event contains time and type. ',
+                'You can remove completed event by clicking <strong>[x]</strong> on the right site.'
+            ].join(''));
+        };
     });

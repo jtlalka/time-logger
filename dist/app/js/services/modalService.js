@@ -100,7 +100,7 @@ angular.module('timeLogger')
             div.style.height = '100%';
             div.style.zIndex = '1000';
             div.style.cursor = 'default';
-            div.style.overflow = 'hidden';
+            div.style.overflow = 'auto';
             return div;
         };
 

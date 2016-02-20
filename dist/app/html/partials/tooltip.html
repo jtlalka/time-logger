@@ -45,7 +45,8 @@
                     <th><span class="text-click" data-order-directive="order 'start'">Begin</span></th>
                     <th><span class="text-click" data-order-directive="order 'stop'">End</span></th>
                     <th><span class="text-click" data-order-directive="order 'type'">Type</span></th>
-                    <th colspan="2"><span class="text-click" data-order-directive="order 'delta'">Time</span></th>
+                    <th><span class="text-click" data-order-directive="order 'delta'">Time</span></th>
+                    <th><span class="text-link text-normal" data-ng-click="historyTableHelp()">[?]</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +68,8 @@
     </div>
 
     <div class="summary" data-ng-switch="daily.overTime > 0">
-        <span class="warn" data-ng-switch-when="true">Daily Over Time: {{daily.overTime | timeFormat}}</span>
-        <span class="info" data-ng-switch-when="false">Daily Missing Time: {{daily.overTime | timeFormat}}</span>
+        <span class="warn" data-ng-switch-when="true">Daily Over Time: {{::daily.overTime | timeFormat}}</span>
+        <span class="info" data-ng-switch-when="false">Daily Missing Time: {{::daily.overTime | timeFormat}}</span>
     </div>
 
 </div>

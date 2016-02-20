@@ -1,5 +1,5 @@
 /**
- * Toggle Directive
+ * Infinite Scroll Directive
  */
 angular.module('timeLogger')
     .directive('scrollDirective', function($parse, $timeout) {
