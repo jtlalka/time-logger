@@ -58,7 +58,7 @@
                     <td class="table-cell-1p text-center">
                         <span class="text-link"
                               data-ng-click="deleteDailyValue(value)"
-                              data-ng-hide="data.isPresentDay && $last">
+                              data-ng-hide="data.isPresentDay && value.id === (daily.values.length - 1)">
                             [<i class="icon icon-remove"></i>]
                         </span>
                     </td>
