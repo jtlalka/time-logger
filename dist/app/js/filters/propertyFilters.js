@@ -66,7 +66,7 @@ angular.module('timeLogger')
         };
 
         var getStringTime = function(time) {
-            return $filter('date')(time, 'HH:mm:ss', 'UTC');
+            return $filter('date')(time, 'HH:mm', 'UTC');
         };
 
         return function(input, flag) {
