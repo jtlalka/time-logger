@@ -11,7 +11,8 @@ angular.module('timeLogger')
             stepTime: commonService.toMillisecond(0, 0, 1),
             totalTime: commonService.toMillisecond(0, 0, 12),
             scaleTimes: optionsDao.getTimeScale(),
-            workTime: 0
+            workTime: 0,
+            nowTime: Date.now()
         };
 
         $scope.display = {

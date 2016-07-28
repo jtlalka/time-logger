@@ -70,15 +70,15 @@ div.summary {
     font-size: 16px;
 }
 
-div.summary > span.good {
+div.summary .good {
     color: #00aa00;
 }
 
-div.summary > span.info {
+div.summary .info {
     color: #000000;
 }
 
-div.summary > span.warn {
+div.summary .warn {
     color: #aa0000;
 }
 

@@ -67,9 +67,15 @@
         </table>
     </div>
 
-    <div class="summary" data-ng-switch="daily.overTime > 0">
-        <span class="warn" data-ng-switch-when="true">Daily Over Time: {{daily.overTime | timeFormat}}</span>
-        <span class="info" data-ng-switch-when="false">Daily Missing Time: {{daily.overTime | timeFormat}}</span>
+    <div class="summary">
+        <span data-ng-switch="data.isPresentDay">
+            <span data-ng-switch-when="true">Working till: {{data.nowTime - daily.overTime | date:'HH:mm'}}</span>
+            <span data-ng-switch-when="false">Working time: {{data.workTime + daily.overTime | timeFormat}}</span>
+        </span>
+        <span data-ng-switch="daily.overTime > 0">
+            <small class="warn" data-ng-switch-when="true">(over time: {{daily.overTime | timeFormat}})</small>
+            <small class="info" data-ng-switch-when="false">(missing: {{daily.overTime | timeFormat}})</small>
+        </span>
     </div>
 
 </div>
